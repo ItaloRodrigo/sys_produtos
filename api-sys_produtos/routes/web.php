@@ -13,10 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return "Olá bem-vindo!";
-});
 
-Route::get('/teste', function () {
-    return "Olá Teste!";
-});
