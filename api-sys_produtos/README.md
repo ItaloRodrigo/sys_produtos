@@ -2,4 +2,7 @@
 
 ## Configurações
 
-nginx, 
+- nginx
+- mysql:5.7.22
+- phpmyadmin
+- redis
