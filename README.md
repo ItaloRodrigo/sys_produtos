@@ -8,6 +8,9 @@
 - redis
 
 ### Instalação com docker
+
+Arquivo: docker-compose.yml
+
 ~~~~php
 docker-compose up -d
 ~~~~
