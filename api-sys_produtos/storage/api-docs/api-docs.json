@@ -70,6 +70,52 @@
                     }
                 }
             }
+        },
+        "/api/produto/create": {
+            "post": {
+                "tags": [
+                    "Produto"
+                ],
+                "summary": "Create Produto",
+                "description": "Produtos Controller",
+                "operationId": "aa896566cccf1f2df094671c4bd36422",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "date_expiration": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "image": {
+                                        "type": "file"
+                                    },
+                                    "id_categoria": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
         }
     },
     "components": {

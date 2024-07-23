@@ -27,6 +27,7 @@ Route::get('/', function () {
 
 Route::prefix('produto')->group(function(){
     Route::get('/show', [ProdutoController::class, 'show']);
+    Route::post('/create', [ProdutoController::class, 'create']);
 });
 
 Route::prefix('categoria')->group(function(){
