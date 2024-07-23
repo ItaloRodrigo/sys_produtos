@@ -31,5 +31,6 @@ Route::prefix('produto')->group(function(){
 
 Route::prefix('categoria')->group(function(){
     Route::get('/show', [CategoriaController::class, 'show']);
+    Route::post('/create', [CategoriaController::class, 'create']);
 });
 

@@ -27,6 +27,35 @@
                 }
             }
         },
+        "/api/categoria/create": {
+            "post": {
+                "tags": [
+                    "Categoria"
+                ],
+                "summary": "Create Categoria",
+                "description": "Categorias Controller",
+                "operationId": "5e2c2341a09e3bf71aa43435c70a3840",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/api/produto/show": {
             "get": {
                 "tags": [
