@@ -20,6 +20,7 @@
 - backend (Laravel): http://localhost:8989/api
 - frontend (Vue.js + Vuetify): http://localhost:3000
 - docs (Swagger): http://localhost:8989/api/documentation
+- phpmyadmin: http://localhost:8080
 
 ### Para instalar e rodar com docker
 

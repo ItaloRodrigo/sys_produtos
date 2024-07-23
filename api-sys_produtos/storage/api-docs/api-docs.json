@@ -1,13 +1,22 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Endpoints do Sys Produtos v1.0",
-        "description": "Sys Produtos v1.0",
-        "version": "1.0"
+        "title": "Produtos-api Documentation",
+        "description": "api-sys_produtos",
+        "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "http://localhost:8989",
+            "description": "local server"
+        }
+    ],
     "paths": {
         "/api/categoria/show": {
             "get": {
+                "tags": [
+                    "Categoria"
+                ],
                 "summary": "Show Categoria",
                 "description": "Categorias Controller",
                 "operationId": "7dce0fa726881bcc2d79d70cad8af87b",
@@ -20,7 +29,10 @@
         },
         "/api/produto/show": {
             "get": {
-                "summary": "Exemplo teste",
+                "tags": [
+                    "Produto"
+                ],
+                "summary": "Show Produto",
                 "description": "Produtos Controller",
                 "operationId": "f2bdf0c48cec12f132f03eeae7c47bd0",
                 "responses": {
@@ -30,5 +42,25 @@
                 }
             }
         }
-    }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Categoria",
+            "description": "Categoria"
+        },
+        {
+            "name": "Produto",
+            "description": "Produto"
+        }
+    ]
 }

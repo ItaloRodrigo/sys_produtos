@@ -12,7 +12,7 @@ class CategoriaController extends Controller
      * @OA\Get(
      *     path="/api/categoria/show",
      *     summary="Show Categoria",
-     *     tags=["Categoria"],
+     *     tags={"Categoria"},
      *     @OA\Response(
      *         response=200,
      *         description="OK"
