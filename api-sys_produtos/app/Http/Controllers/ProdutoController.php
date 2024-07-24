@@ -159,6 +159,50 @@ class ProdutoController extends Controller
         }
     }
 
+    /**
+     * Produtos Controller
+     * @OA\Post(
+     *     path="/api/produto/update",
+     *     summary="Update Produto",
+     *     tags={"Produto"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="price",
+     *                     type="double"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="date_expiration",
+     *                     type="datetime"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="image",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="id_categoria",
+     *                     type="int"
+     *                 ),
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * ),
+     */
+
     public function update(Request $request){
         try {
 
