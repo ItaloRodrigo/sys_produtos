@@ -12,14 +12,43 @@
         }
     ],
     "paths": {
-        "/api/categoria/show": {
+        "/api/categoria/get/{id}": {
             "get": {
                 "tags": [
                     "Categoria"
                 ],
-                "summary": "Show Categoria",
+                "summary": "Get Categoria",
                 "description": "Categorias Controller",
-                "operationId": "7dce0fa726881bcc2d79d70cad8af87b",
+                "operationId": "ba5e87a6c2c86963d243acf50a5f2414",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/categoria/all": {
+            "get": {
+                "tags": [
+                    "Categoria"
+                ],
+                "summary": "All Categoria",
+                "description": "Categorias Controller",
+                "operationId": "5366ac586c6fb08ad7db04d89c045799",
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -40,8 +69,101 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
                                     "name": {
                                         "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/categoria/update": {
+            "post": {
+                "tags": [
+                    "Categoria"
+                ],
+                "summary": "Update Categoria",
+                "description": "Categorias Controller",
+                "operationId": "269b79bb094630057d5b64bf615f4c3b",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/categoria/delete": {
+            "post": {
+                "tags": [
+                    "Categoria"
+                ],
+                "summary": "Delete Categoria",
+                "description": "Categorias Controller",
+                "operationId": "ad55593bb97548058f980e13e186d1be",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/categoria/pagination": {
+            "post": {
+                "tags": [
+                    "Categoria"
+                ],
+                "summary": "Pagination Categoria",
+                "description": "Categorias Controller",
+                "operationId": "59c40337319aa7af26613ef36dfebd5f",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "page": {
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -99,7 +221,7 @@
                                         "format": "date-time"
                                     },
                                     "image": {
-                                        "type": "file"
+                                        "type": "string"
                                     },
                                     "id_categoria": {
                                         "type": "integer"

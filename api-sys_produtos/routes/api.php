@@ -26,12 +26,18 @@ Route::get('/', function () {
 });
 
 Route::prefix('produto')->group(function(){
-    Route::get('/show', [ProdutoController::class, 'show']);
+    Route::get('/get/{id}', [ProdutoController::class, 'show']);
+    Route::get('/all', [ProdutoController::class, 'all']);
     Route::post('/create', [ProdutoController::class, 'create']);
+    Route::post('/update', [ProdutoController::class, 'update']);
 });
 
 Route::prefix('categoria')->group(function(){
-    Route::get('/show', [CategoriaController::class, 'show']);
+    Route::get('/get/{id}', [CategoriaController::class, 'get']);
+    Route::get('/all', [CategoriaController::class, 'all']);
     Route::post('/create', [CategoriaController::class, 'create']);
+    Route::post('/update', [CategoriaController::class, 'update']);
+    Route::get('/delete/{id}', [CategoriaController::class, 'delete']);
+    Route::get('/pagination/{page}', [CategoriaController::class, 'pagination']);
 });
 
