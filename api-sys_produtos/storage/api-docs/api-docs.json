@@ -178,14 +178,119 @@
                 }
             }
         },
-        "/api/produto/show": {
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auth login",
+                "description": "Auth Controller",
+                "operationId": "2ede96b91e694d9d6323469efacc087e",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/auth/isloged": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auth loged",
+                "description": "Auth Controller",
+                "operationId": "bca479aa0c11107b70ea26ed334a570a",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auth logout",
+                "description": "Auth Controller",
+                "operationId": "f1edef7f79a0461455ab182363b1fd37",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/produto/get": {
             "get": {
                 "tags": [
                     "Produto"
                 ],
-                "summary": "Show Produto",
+                "summary": "Get Produto",
                 "description": "Produtos Controller",
-                "operationId": "f2bdf0c48cec12f132f03eeae7c47bd0",
+                "operationId": "9009ec9b77eb423617ffe0931a61edcb",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/produto/all": {
+            "get": {
+                "tags": [
+                    "Produto"
+                ],
+                "summary": "All Produto",
+                "description": "Produtos Controller",
+                "operationId": "f50d53bf21e26390130151fddcf67370",
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -238,6 +343,268 @@
                     }
                 }
             }
+        },
+        "/api/produto/update": {
+            "post": {
+                "tags": [
+                    "Produto"
+                ],
+                "summary": "Update Produto",
+                "description": "Produtos Controller",
+                "operationId": "bb5b2ca62635f52e0181aa37eb1b773c",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "date_expiration": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "image": {
+                                        "type": "string"
+                                    },
+                                    "id_categoria": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/produto/delete": {
+            "get": {
+                "tags": [
+                    "Produto"
+                ],
+                "summary": "Delete Produto",
+                "description": "Produtos Controller",
+                "operationId": "93e8250182569c15ee1ea8ff0f0045fb",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/produto/pagination": {
+            "post": {
+                "tags": [
+                    "Produto"
+                ],
+                "summary": "Pagination Produto",
+                "description": "Produtos Controller",
+                "operationId": "21e5ccdfdbc205babf04f6c99b7bf43c",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "page": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/user/get/{id}": {
+            "get": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Get Usuário",
+                "description": "Usuário Controller",
+                "operationId": "60121bcbd216533e5e8fcb7cc37d3871",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/user/all": {
+            "get": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "All Usuário",
+                "description": "Usuário Controller",
+                "operationId": "7a956164edf26d41940b683ec8feb348",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/user/create": {
+            "get": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Create Usuário",
+                "description": "Usuário Controller",
+                "operationId": "e3c2ca93124f94bc0ea43c2ee3c635e3",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/user/update": {
+            "get": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Update Usuário",
+                "description": "Usuário Controller",
+                "operationId": "d27e23329850982df02843c793d3cc2b",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/user/delete": {
+            "get": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Delete Usuário",
+                "description": "Usuário Controller",
+                "operationId": "d18ffbdd4448b9d997a8cc7f66d3b0e3",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/user/pagination": {
+            "post": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Pagination Usuário",
+                "description": "Usuário Controller",
+                "operationId": "399cdf4c0a5dcc41e58f5781868e0b68",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "page": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -247,6 +614,12 @@
                 "name": "Authorization",
                 "in": "header",
                 "scheme": "bearer"
+            },
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     },
@@ -256,8 +629,16 @@
             "description": "Categoria"
         },
         {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
             "name": "Produto",
             "description": "Produto"
+        },
+        {
+            "name": "Usuário",
+            "description": "Usuário"
         }
     ]
 }

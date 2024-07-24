@@ -4,7 +4,6 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,21 +32,18 @@ Route::prefix('auth')->group(function(){
     Route::post('logout', [LoginController::class,'logout']);
 });
 
-Route::prefix('auth')->group(function(){
-    Route::post('login', [LoginController::class,'authenticate']);
-    Route::post('logout', [LoginController::class,'logout']);
-});
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('auth')->group(function(){
         Route::get('isloged/{id}', [LoginController::class,'isLoged']);
     });
 
     Route::prefix('user')->group(function(){
-        // Route::get('/get/{id}', [ProdutoController::class, 'show']);
+        Route::get('/get/{id}', [ProdutoController::class, 'show']);
         Route::get('/all', [UserController::class, 'all']);
-        // Route::post('/create', [UserController::class, 'create']);
-        // Route::post('/update', [UserController::class, 'update']);
+        Route::post('/create', [UserController::class, 'create']);
+        Route::post('/update', [UserController::class, 'update']);
+        Route::get('/delete/{id}', [UserController::class, 'delete']);
+        Route::get('/pagination/{page}', [UserController::class, 'pagination']);
     });
 
     Route::prefix('produto')->group(function(){

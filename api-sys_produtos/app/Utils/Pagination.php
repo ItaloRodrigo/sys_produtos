@@ -40,13 +40,13 @@ class Pagination extends BaseUtils
              * 20 - 30
              */
             $offset = ($page*10)-10;
-            $count = DB::table('user')->count();
+            $count = DB::table('users')->count();
             //---
-            $records = DB::table("user")
+            $records = DB::table("users")
                             ->select('*',(
                                 DB::raw('(
                                     select date_format(last_used_at,"%d/%m/%Y %h:%i:%s") from personal_access_tokens as p
-                                    where p.tokenable_id = user.id
+                                    where p.tokenable_id = users.id
                                 ) as last_access')
                             ))
                             ->offset($offset)->limit(10)->get();

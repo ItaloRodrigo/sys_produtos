@@ -10,6 +10,35 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+
+    /**
+     * Auth Controller
+     * @OA\Post(
+     *     path="/api/auth/login",
+     *     summary="Auth login",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password",
+     *                     type="string"
+     *                 ),
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * ),
+     */
+
     public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -18,7 +47,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials,$remember)) {
             $user = $request->user();
             //---
-            if($this->taLogado($user->id)['status']){
+            if($this->taLogado($user->id)['logado']){
                 User::find($user->id)->tokens()->delete();
             }
             return Response::successWithData('Login efetuado com sucesso!',[
@@ -33,6 +62,30 @@ class LoginController extends Controller
             ]);
         }
     }
+
+    /**
+     * Auth Controller
+     * @OA\Get(
+     *     path="/api/auth/isloged",
+     *     summary="Auth loged",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="id",
+     *                     type="int"
+     *                 ),
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * ),
+     */
 
     public function isLoged(Request $request,$id){
         // $id = $request->input('id');
@@ -60,6 +113,30 @@ class LoginController extends Controller
             "tokens" => $tokens
         ];
     }
+
+    /**
+     * Auth Controller
+     * @OA\Post(
+     *     path="/api/auth/logout",
+     *     summary="Auth logout",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="id",
+     *                     type="int"
+     *                 ),
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * ),
+     */
 
     public function logout(Request $request){
         $id = $request->input('id');
