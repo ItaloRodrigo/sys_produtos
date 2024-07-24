@@ -18,42 +18,59 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return "Seja bem vindo à API Sys_Produtos";
+})->name('home');
+
+Route::get('/sem-auth', function () {
+    return "É necessário se autenticar para acessar os endpoints dessa API";
+})->name('sem-auth');
+
+//----------------------------------------------------------------------------------
+
 Route::prefix('auth')->group(function(){
     Route::post('login', [LoginController::class,'authenticate']);
     Route::post('logout', [LoginController::class,'logout']);
 });
 
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('auth')->group(function(){
+    Route::post('login', [LoginController::class,'authenticate']);
+    Route::post('logout', [LoginController::class,'logout']);
 });
 
-Route::get('/', function () {
-    return "Seja bem vindo à API Sys_Produtos";
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('auth')->group(function(){
+        Route::get('isloged/{id}', [LoginController::class,'isLoged']);
+    });
+
+    Route::prefix('user')->group(function(){
+        // Route::get('/get/{id}', [ProdutoController::class, 'show']);
+        Route::get('/all', [UserController::class, 'all']);
+        // Route::post('/create', [UserController::class, 'create']);
+        // Route::post('/update', [UserController::class, 'update']);
+    });
+
+    Route::prefix('produto')->group(function(){
+        Route::get('/get/{id}', [ProdutoController::class, 'show']);
+        Route::get('/all', [ProdutoController::class, 'all']);
+        Route::post('/create', [ProdutoController::class, 'create']);
+        Route::post('/update', [ProdutoController::class, 'update']);
+        Route::get('/delete/{id}', [ProdutoController::class, 'delete']);
+        Route::get('/pagination/{page}', [ProdutoController::class, 'pagination']);
+    });
+
+    Route::prefix('categoria')->group(function(){
+        Route::get('/get/{id}', [CategoriaController::class, 'get']);
+        Route::get('/all', [CategoriaController::class, 'all']);
+        Route::post('/create', [CategoriaController::class, 'create']);
+        Route::post('/update', [CategoriaController::class, 'update']);
+        Route::get('/delete/{id}', [CategoriaController::class, 'delete']);
+        Route::get('/pagination/{page}', [CategoriaController::class, 'pagination']);
+    });
 });
 
-Route::prefix('user')->group(function(){
-    // Route::get('/get/{id}', [ProdutoController::class, 'show']);
-    Route::get('/all', [UserController::class, 'all']);
-    // Route::post('/create', [UserController::class, 'create']);
-    // Route::post('/update', [UserController::class, 'update']);
-});
 
-Route::prefix('produto')->group(function(){
-    Route::get('/get/{id}', [ProdutoController::class, 'show']);
-    Route::get('/all', [ProdutoController::class, 'all']);
-    Route::post('/create', [ProdutoController::class, 'create']);
-    Route::post('/update', [ProdutoController::class, 'update']);
-    Route::get('/delete/{id}', [ProdutoController::class, 'delete']);
-    Route::get('/pagination/{page}', [ProdutoController::class, 'pagination']);
-});
 
-Route::prefix('categoria')->group(function(){
-    Route::get('/get/{id}', [CategoriaController::class, 'get']);
-    Route::get('/all', [CategoriaController::class, 'all']);
-    Route::post('/create', [CategoriaController::class, 'create']);
-    Route::post('/update', [CategoriaController::class, 'update']);
-    Route::get('/delete/{id}', [CategoriaController::class, 'delete']);
-    Route::get('/pagination/{page}', [CategoriaController::class, 'pagination']);
-});
+
+
 

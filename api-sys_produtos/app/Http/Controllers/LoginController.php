@@ -34,11 +34,29 @@ class LoginController extends Controller
         }
     }
 
+    public function isLoged(Request $request,$id){
+        // $id = $request->input('id');
+
+        if($this->taLogado($id)['logado']){
+            return Response::successWithData('Usuário logado',[
+                "logado" => true,
+                "user"   => $request->user(),
+                "token"  => $request->user()->currentAccessToken(),
+                "tokens" => $this->taLogado($id)['tokens']
+            ]);
+        }else{
+            return Response::error([
+                'logado' => false,
+                'message' => 'Usuário não está logado!'
+            ]);
+        }
+    }
+
     private function taLogado($id){
         $tokens = PersonalAccessToken::where("tokenable_id",$id)->get();
         //---
         return [
-            "status" =>(count($tokens) > 0)?true:false,
+            "logado" =>(count($tokens) > 0)?true:false,
             "tokens" => $tokens
         ];
     }
