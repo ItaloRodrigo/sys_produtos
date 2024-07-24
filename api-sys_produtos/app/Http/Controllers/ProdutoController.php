@@ -8,6 +8,7 @@ use App\Rules\RuleRequired;
 use App\Rules\RuleStringMax;
 use App\Rules\RuleValidateDate;
 use App\Rules\RuleValuePositive;
+use App\Utils\Pagination;
 use App\Utils\Response;
 use Illuminate\Http\Request;
 use File;
@@ -260,6 +261,95 @@ class ProdutoController extends Controller
                     'produto' => 'esse produto não existe'
                 ]);
             }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return Response::error($e->errors());
+        }
+    }
+
+    /**
+     * Produtos Controller
+     * @OA\Get(
+     *     path="/api/produto/delete",
+     *     summary="Delete Produto",
+     *     tags={"Produto"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="id",
+     *                     type="int"
+     *                 ),
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * ),
+     */
+
+    public function delete($id){
+        try {
+            try {
+                $existe = Produto::find($id);
+                if($existe){
+                    Produto::where("id_categoria", $id)->delete();
+                    //---
+                    return Response::success('Produto deletado com sucesso!');
+                }else{
+                    return Response::error([
+                        'produto' => 'esse produto não existe!'
+                    ]);
+                }
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                return Response::error($e->errors());
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return Response::error($e->errors());
+        }
+    }
+
+    /**
+     * Produtos Controller
+     * @OA\Post(
+     *     path="/api/produto/pagination",
+     *     summary="Pagination Produto",
+     *     tags={"Produto"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="page",
+     *                     type="int"
+     *                 ),
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * ),
+     */
+
+     public function pagination($page){
+        try {
+            // 10 linhas por page
+            /**
+             * 1 - 10
+             * 10 - 20
+             * 20 - 30
+             */
+
+            $pagination = Pagination::pagination($page,"produto");
+            //---
+            return Response::successWithData('ok', [
+                "produtos"   => $pagination['records'],
+                "count"      => $pagination['count']
+            ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return Response::error($e->errors());
         }

@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\PersonalAccessToken;
 use App\Models\User;
+use App\Utils\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function auth(Request $request)
+    public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
         $remember = $request->input('remember');
@@ -20,23 +21,16 @@ class LoginController extends Controller
             if($this->taLogado($user->id)['status']){
                 User::find($user->id)->tokens()->delete();
             }
-            return response()->json([
-                "status" => 200,
-                "info" => "success",
-                "logged" => true,
-                "user" => $user,
-                "token" => $user->createToken("token")->plainTextToken,
+            return Response::successWithData('Login efetuado com sucesso!',[
+                "logado" => true,
+                "user"   => $user,
+                "token"  => $user->createToken("token")->plainTextToken,
                 "tokens" => User::find($user->id)->tokens(),
-                "message" => "ok"
-            ],200);
+            ]);
         }else{
-            return response()->json([
-                    // "credentials" => $credentials,
-                    "logged" => false,
-                    "message" => "NOK"
-                ],
-                200
-            );
+            return Response::error([
+                "logado" => false,
+            ]);
         }
     }
 
@@ -47,5 +41,15 @@ class LoginController extends Controller
             "status" =>(count($tokens) > 0)?true:false,
             "tokens" => $tokens
         ];
+    }
+
+    public function logout(Request $request){
+        $id = $request->input('id');
+        //---
+        User::find($id)->tokens()->delete();
+        //---
+        return Response::successWithData('Logout realizado com sucesso!',[
+            "logout" => true
+        ]);
     }
 }
