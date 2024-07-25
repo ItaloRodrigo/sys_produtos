@@ -1,0 +1,36 @@
+/* CSS para a utilização nas notificações (NotificationDefault) */
+
+.notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
+    z-index: 1000;
+    width: 250px;
+    height: auto;
+}
+
+.notification {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    opacity: 0.9;
+    transition: all 0.5s;
+}
+
+.notification--error {
+    background-color: #ff6347;
+}
+
+.notification--success {
+    background-color: #32cd32;
+}
+
+.notification--warning {
+    background-color: #ffd700;
+}
+
+.cursor {
+    cursor: pointer !important;
+}

@@ -1,0 +1,17 @@
+/* CSS para a utilização em páginas não encontradas (PaginaNaoEncontrada) */
+
+.error-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.error-container__message {
+    font-size: 2rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+}
+
+.error-container__description {
+    font-size: 1rem;
+    color: #6c757d;
+}
