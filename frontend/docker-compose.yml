@@ -3,7 +3,9 @@ services:
   vue-app:
     build: .
     ports:
-      - "80:80"
+      - "3000:3000"
     volumes:
       - .:/app
       - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
