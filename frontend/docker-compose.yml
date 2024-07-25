@@ -3,7 +3,7 @@ services:
   vue-app:
     build: .
     ports:
-      - "3000:3000"
+      - "4000:4000"
     volumes:
       - .:/app
       - /app/node_modules
