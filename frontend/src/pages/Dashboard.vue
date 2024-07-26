@@ -92,6 +92,9 @@ export default {
     return {
       // counter: this.$auth.getCounter
     }
+  },
+  mounted(){
+    console.log(this.$auth.isAuth);
   }
 }
 </script>
