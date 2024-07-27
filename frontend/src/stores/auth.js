@@ -1,22 +1,19 @@
+import {computed, ref} from 'vue';
 import { defineStore } from "pinia";
 import { api, except } from "../plugins/api";
 // import Cookies from "js-cookie";
 
-export default defineStore({
-  id: "auth",
+export const auth_store = defineStore('auth',{
   state: () => ({
-    user: null,
+    user: ref(JSON.parse(localStorage.getItem("user")))?ref(JSON.parse(localStorage.getItem("user"))):null,
     counter: 0,
   }),
   getters: {
     isAuth(state) {
-      // console.log("object");
-      // console.log(this);
-      // return this.isLoged() != null;
       return state.user != null;
     },
     getUser(state) {
-      return state.user.user;
+      return state.user;
     },
     getName(state) {
       if (state.user != null) return state.user.user.name;
@@ -41,7 +38,7 @@ export default defineStore({
         .then((res) => {
           this.user = res.data.data;
         });
-        // console.log(this.user.msg);
+      localStorage.setItem('user', JSON.stringify(this.user));
       return this.user;
     },
     async logout(ctx = {}) {
@@ -53,6 +50,7 @@ export default defineStore({
         })
         .catch((e) => console.log(ctx, e));
       this.user = null;
+      localStorage.removeItem('user');
       return data;
     },
     async isLoged() {

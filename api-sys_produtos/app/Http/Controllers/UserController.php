@@ -155,13 +155,13 @@ class UserController extends Controller
                 'password' => [new RuleRequired, new RuleStringMax(255)],
             ]);
 
-            $user = User::where('id',$request->id)->update([
+            $user = User::where('id','=',$request->id)->update([
                 'name'     => $request->name,
                 'email'    => $request->email,
                 'password' => Hash::make($request->password),
             ]);
             return Response::successWithData('Usuário atualizado com sucesso!', [
-                'user' => User::find($user->id)
+                'user' => User::find($request->id)
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return Response::error($e->errors());

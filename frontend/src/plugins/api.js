@@ -1,5 +1,4 @@
 import axios from "axios";
-// import JSZip from "jszip";
 
 function api(ctx = null, download = false) {
   let config = {
@@ -7,7 +6,7 @@ function api(ctx = null, download = false) {
     headers: {
       "Accept-Language": (
         // localStorage.getItem("lang") || i18n.global.locale
-        import.meta.env.VITE_I18N_LOCALE 
+        import.meta.env.VITE_I18N_LOCALE
       ),
       // "Access-Control-Allow-Origin": "*",
       // "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
@@ -16,7 +15,8 @@ function api(ctx = null, download = false) {
     },
   };
   if (ctx != null) {
-    if ("$auth" in ctx) config.headers["Authorization"] = "Bearer " + ctx.$auth.user.token;
+    // console.log(this.$auth);
+    if ("$auth" in ctx) config.headers["Authorization"] = "Bearer " + ctx.$auth.token;
     // if ("current_token" in ctx) config.headers["Authorization"] = "Token " + ctx.current_token;
   }
   if (download) {

@@ -12,6 +12,7 @@ use App\Utils\Pagination;
 use App\Utils\Response;
 use Illuminate\Http\Request;
 use File;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProdutoController extends Controller
@@ -57,8 +58,20 @@ class ProdutoController extends Controller
 
      public function all(){
         try {
+            $produtos = DB::table('produto as p')->select(
+                'p.id as id',
+                'p.name as name',
+                'p.description as description',
+                'p.price as price',
+                'p.date_expiration as date_expiration',
+                'p.image as image',
+                'p.id_categoria as id_categoria',
+                'c.name as categoria_name'
+            )
+            ->leftjoin('categoria as c', 'p.id_categoria', '=', 'c.id')->get();
+            //---
             return Response::successWithData("ok", [
-                "produtos" => Produto::all()
+                "produtos" => $produtos
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return Response::error($e->errors());

@@ -7,6 +7,7 @@
 // Plugins
 import { registerPlugins } from '@/plugins'
 
+
 // Components
 import App from './App.vue'
 import BaseLayout from "@/layouts/BaseLayout.vue";
@@ -14,9 +15,11 @@ import BaseLayout from "@/layouts/BaseLayout.vue";
 // Composables
 import { createApp } from 'vue'
 
-const app = createApp(App)
+const app = createApp(App);
 
-registerPlugins(app)
+registerPlugins(app);
+
+
 
 app.component("base-layout",BaseLayout)
 

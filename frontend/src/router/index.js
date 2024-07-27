@@ -5,9 +5,11 @@
  */
 
 // Composables
+import { computed } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import { setupLayouts } from 'virtual:generated-layouts';
-import auth_store from "../stores/auth";
+// import { setupLayouts } from 'virtual:generated-layouts';
+import {auth_store} from "../stores/auth";
+import store from '../stores/loadingstore'
 
 
 const routes = [
@@ -22,9 +24,19 @@ const routes = [
     component: () => import("@/pages/Login/Login.vue"),
   },
   {
+    path: "/logout",
+    name: "logout",
+    component: () => import("@/pages/Login/Logout.vue"),
+  },
+  {
     path: "/users",
     name: "users",
     component: () => import("@/pages/Usuarios/Usuarios.vue"),
+  },
+  {
+    path: "/produtos",
+    name: "produtos",
+    component: () => import("@/pages/Produtos/Produtos.vue"),
   },
   {
     path: "/:pathMatch(.*)*",
@@ -43,17 +55,20 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = import.meta.env.VITE_TITLE+" - "+to.name;
   //---
-  const store = auth_store();
+  const store_auth = auth_store();
+  // const user = computed(() => store.getUser);
   //---
-  console.log("chegou aqui!")
+  store.setLoading(true);
   //---
-  if ((to.name != "login") && (store.isAuth)) {
-    next();
+  if ((to.name != "login") && (!store_auth.isAuth)) {
+    next('/login');
   } else {
-    next({
-      name: "login",
-    });
+    next();
   }
 });
+
+router.afterEach(() => {
+  store.setLoading(false)
+})
 
 export default router

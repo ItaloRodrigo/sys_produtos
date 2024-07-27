@@ -1,7 +1,10 @@
 <template>
+
   <v-card>
     <v-layout>
+      <Loading/>
       <v-app-bar color="black" prominent>
+
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
         <v-btn size="small" class="border bg-primary" @click="selfback()">
@@ -10,6 +13,10 @@
 
         <v-btn size="small" class="border mx-1 bg-primary" to="/">
           <v-icon >mdi-home</v-icon>
+        </v-btn>
+
+        <v-btn size="small" class="border mr-1 bg-red-darken-2" to="/logout">
+          <v-icon >mdi-exit-to-app</v-icon>
         </v-btn>
 
         <v-toolbar-title >{{titlecard}} </v-toolbar-title>
@@ -51,11 +58,15 @@
 </template>
 
 <script>
-  import { ref } from 'vue';
+
+  import Loading from '@/components/Loading.vue';
 
   export default {
     name: "BaseLayout",
     props: ['titlecard'],
+    components:{
+      Loading,
+    },
     data: () => ({
       drawer: false,
       group: null,
@@ -73,6 +84,13 @@
           value: '02',
           icon: 'mdi-account',
           to:"/users",
+          target:""
+        },
+        {
+          title: 'Produtos',
+          value: '03',
+          icon: 'mdi mdi-coffee',
+          to:"/produtos",
           target:""
         },
         {
@@ -94,7 +112,7 @@
     methods:{
       selfback(){
         this.$router.go(-1);
-      }
+      },
     }
   }
 </script>

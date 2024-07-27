@@ -28,7 +28,7 @@
               </v-col>
               <v-col>
                 <v-sheet class="pa-2 ma-2">
-                  <v-list-item-subtitle>CPF</v-list-item-subtitle>
+                  <v-list-item-subtitle>Data de cadastro</v-list-item-subtitle>
                 </v-sheet>
               </v-col>
             </v-row>
@@ -60,10 +60,11 @@
 import BaseLayout from '../../layouts/BaseLayout.vue';
 import { useNotificationsStore } from '@/stores/notifications';
 import NotificationDefault from '@/components/NotificationDefault.vue';
-import ItemUsuario from '@/components/ItemUsuario.vue';
-import ModalCriarUsuario from '@/components/ModalCriarUsuario.vue'
+import ItemUsuario from '@/components/Usuarios/ItemUsuario.vue';
+import ModalCriarUsuario from '@/components/Usuarios/ModalCriarUsuario.vue'
 
-import axios from 'axios';
+// import axios from 'axios';
+import {api} from '@/plugins/api'
 
 
 export default {
@@ -89,18 +90,21 @@ export default {
   methods:{
 
     async updateLista(){
-      await axios.get("user/all")
-        .then((response) => {
-          this.usuarios = [];
-          response.data.user.forEach(data => {
-            this.usuarios.push(data);
-          });
-          // console.log(response.data)
-        });
+      // console.log("ctx token")
+      // console.log(this.$auth.token);
+      await api(this)
+        .get("user/all")
+        .then((res) => {
+          this.usuarios = res.data.data.users;
+          // this.pages = res.data.count;
+        })
+        .catch((e) => console.log(e));
+      // console.log(this.usuarios);
       //---
-      if(useNotificationsStore().messages.length > 0){
-        this.showMessage();
-      }
+      console.log(useNotificationsStore().messages);
+      // if(useNotificationsStore().messages.length > 0){
+      //   this.showMessage();
+      // }
     },
 
     showMessage(){
