@@ -1,6 +1,6 @@
 import axios from "axios";
 
-function api(ctx = null, download = false) {
+function api(ctx = null, download = false, isFileUpload = false) {
   let config = {
     baseURL: import.meta.env.VITE_API,
     headers: {
@@ -8,20 +8,22 @@ function api(ctx = null, download = false) {
         // localStorage.getItem("lang") || i18n.global.locale
         import.meta.env.VITE_I18N_LOCALE
       ),
-      // "Access-Control-Allow-Origin": "*",
-      // "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
-      // 'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE, OPTIONS',
       "Accept": "application/json"
     },
   };
+
   if (ctx != null) {
-    // console.log(this.$auth);
     if ("$auth" in ctx) config.headers["Authorization"] = "Bearer " + ctx.$auth.token;
-    // if ("current_token" in ctx) config.headers["Authorization"] = "Token " + ctx.current_token;
   }
+
   if (download) {
     config["responseType"] = 'blob';
   }
+
+  if (isFileUpload) {
+    config.headers["Content-Type"] = "multipart/form-data";
+  }
+
   return axios.create(config);
 }
 function except(ctx, erro, erroIgnore = null) {

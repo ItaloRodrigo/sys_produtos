@@ -60,4 +60,37 @@ class Pagination extends BaseUtils
             ];
         }
     }
+
+    public static function paginationProdutos($page){
+        try{
+            // 10 linhas por page
+            /**
+             * 1 - 10
+             * 10 - 20
+             * 20 - 30
+             */
+            $offset = ($page*10)-10;
+            $count = DB::table('produto as p')->leftjoin('categoria as c', 'p.id_categoria', '=', 'c.id')->count();
+            //---
+            $records = DB::table('produto as p')->select(
+                'p.id as id',
+                'p.name as name',
+                'p.description as description',
+                'p.price as price',
+                'p.date_expiration as date_expiration',
+                'p.image as image',
+                'p.id_categoria as id_categoria',
+                'c.name as categoria_name'
+            )
+            ->leftjoin('categoria as c', 'p.id_categoria', '=', 'c.id')->offset($offset)->limit(10)->get();
+            return [
+                "records" => $records,
+                "count" => $count
+            ];
+        }catch (\Illuminate\Database\QueryException $e) {
+            return [
+                'message' => $e->getMessage(),
+            ];
+        }
+    }
 }

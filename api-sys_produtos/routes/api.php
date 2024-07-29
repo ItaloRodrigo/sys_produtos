@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\UserController;
@@ -32,6 +33,10 @@ Route::prefix('auth')->group(function(){
     Route::post('logout', [LoginController::class,'logout']);
 });
 
+Route::prefix("dashboard")->group(function(){
+    Route::get("/get",[DashboardController::class,'getDashboardData']);
+});
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('auth')->group(function(){
         Route::get('isloged/{id}', [LoginController::class,'isLoged']);
@@ -50,7 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/get/{id}', [ProdutoController::class, 'show']);
         Route::get('/all', [ProdutoController::class, 'all']);
         Route::post('/create', [ProdutoController::class, 'create']);
-        Route::post('/update', [ProdutoController::class, 'update']);
+        Route::post('/update/{id}', [ProdutoController::class, 'update']);
         Route::get('/delete/{id}', [ProdutoController::class, 'delete']);
         Route::get('/pagination/{page}', [ProdutoController::class, 'pagination']);
     });
@@ -63,6 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/delete/{id}', [CategoriaController::class, 'delete']);
         Route::get('/pagination/{page}', [CategoriaController::class, 'pagination']);
     });
+
 });
 
 

@@ -4,21 +4,28 @@
       <h1>Usuários</h1>
 
       <v-card flat class="border mt-3">
-        <v-card-item >
+        <v-card-item>
           <template v-slot:append>
             <v-btn color="primary" @click="chamaModalCriarUsuario()">Adicionar Usuário</v-btn>
-            <ModalCriarUsuario v-if="this.modalCriarUsuario" @closeModal="onCloseModal()" />
+            <ModalCriarUsuario v-if="modalCriarUsuario" @closeModal="onCloseModal()" />
           </template>
-          <!-- <v-text-field prepend-icon="mdi-searchmdi mdi-magnify" v-model="pesquisar" @keyup.enter="onEnterPesquisar" clearable label="Pesquisar" outlined></v-text-field> -->
         </v-card-item>
 
-        <v-card-item class="">
-          <v-list lines="one" select-strategy="single-leaf" >
+        <v-card-item>
+          <!-- Spinner de carregamento -->
+          <v-progress-circular
+            v-if="loading"
+            indeterminate
+            color="primary"
+            class="ma-5"
+          ></v-progress-circular>
+
+          <!-- Conteúdo da lista -->
+          <v-list v-else lines="one" select-strategy="single-leaf">
             <v-row no-gutters class="border-b">
               <v-col>
                 <v-sheet class="pa-2 ma-2">
                   <v-list-item-subtitle>Nome</v-list-item-subtitle>
-
                 </v-sheet>
               </v-col>
               <v-col>
@@ -32,27 +39,28 @@
                 </v-sheet>
               </v-col>
             </v-row>
-            <v-div v-for="usuario,index in usuarios" :key="index">
-
-              <ItemUsuario :usuario="usuario" @dblclick="onSelected(usuario)" @updateLista="updateLista()"/>
+            <v-div v-for="usuario in usuarios" :key="usuario.id">
+              <ItemUsuario :usuario="usuario" :loggedInUserId="this.$auth.user.user.id" @dblclick="onSelected(usuario)" @updateLista="updateLista" />
             </v-div>
-
-
-            <Tarefa/>
-            <Tarefa/>
           </v-list>
-        </v-card-item>
 
+          <!-- Paginação -->
+          <Pagination
+            :offset="currentPage - 1"
+            :total="totalUsers"
+            :limit="10"
+            @change-page="handlePageChange"
+            class="mt-4"
+          />
+        </v-card-item>
       </v-card>
 
-    <!-- Elemento de notificação -->
-    <NotificationDefault ref="notificationRef" />
+      <!-- Elemento de notificação -->
+      <NotificationDefault ref="notificationRef" />
 
-    <!-- Modal Editar Usuário -->
-    <ModalEditarUsuario v-if="modalEditarUsuario" @closeModal="closeModalEditarUsuario()" :usuario="this.usuarioSelected" />
-
+      <!-- Modal Editar Usuário -->
+      <ModalEditarUsuario v-if="modalEditarUsuario" @closeModal="closeModalEditarUsuario()" :usuario="usuarioSelected" />
     </v-container>
-
   </base-layout>
 </template>
 
@@ -61,81 +69,83 @@ import BaseLayout from '../../layouts/BaseLayout.vue';
 import { useNotificationsStore } from '@/stores/notifications';
 import NotificationDefault from '@/components/NotificationDefault.vue';
 import ItemUsuario from '@/components/Usuarios/ItemUsuario.vue';
-import ModalCriarUsuario from '@/components/Usuarios/ModalCriarUsuario.vue'
-
-// import axios from 'axios';
-import {api} from '@/plugins/api'
-
+import ModalCriarUsuario from '@/components/Usuarios/ModalCriarUsuario.vue';
+import ModalEditarUsuario from '@/components/Usuarios/ModalEditarUsuario.vue';
+import Pagination from '@/components/Pagination.vue'; // Importação do componente de paginação
+import { api } from '@/plugins/api';
 
 export default {
-  components: { BaseLayout, NotificationDefault, ItemUsuario, ModalCriarUsuario },
+  components: { BaseLayout, NotificationDefault, ItemUsuario, ModalCriarUsuario, ModalEditarUsuario, Pagination },
   name: "Usuarios",
 
   data() {
     return {
       pesquisar: null,
-      modalCriarUsuario:false,
-      modalEditarUsuario:false,
-      usuarioSelected:null,
-      usuarios:[
-        {id:1, name:"teste1", email:"teste@gmail.com", cpf:"xxx.xxx.xxx-xx", status:true},
-      ],
+      modalCriarUsuario: false,
+      modalEditarUsuario: false,
+      usuarioSelected: null,
+      usuarios: [],
+      loading: false,
+      currentPage: 1,
+      totalUsers: 0, // Total de usuários obtido da API
     }
   },
 
-  created(){
-    this.updateLista();
+  created() {
+    this.fetchPage(this.currentPage);
   },
 
-  methods:{
-
-    async updateLista(){
-      // console.log("ctx token")
-      // console.log(this.$auth.token);
+  methods: {
+    async fetchPage(page) {
+      console.log("Fetching page:", page);
+      this.loading = true;
       await api(this)
-        .get("user/all")
+        .get(`user/pagination/${page}`)
         .then((res) => {
           this.usuarios = res.data.data.users;
-          // this.pages = res.data.count;
+          this.totalUsers = res.data.data.count; // Total de usuários obtido da API
         })
-        .catch((e) => console.log(e));
-      // console.log(this.usuarios);
-      //---
-      console.log(useNotificationsStore().messages);
-      // if(useNotificationsStore().messages.length > 0){
-      //   this.showMessage();
-      // }
+        .catch((e) => console.log(e))
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
-    showMessage(){
+    handlePageChange(page) {
+      this.currentPage = page;
+      this.fetchPage(page);
+    },
+
+    async updateLista() {
+      this.fetchPage(this.currentPage);
+    },
+
+    showMessage() {
       useNotificationsStore().messages.forEach(message => {
         this.$refs.notificationRef.addNotification(message);
       });
-      //---
       useNotificationsStore().clearMessage();
     },
 
-    chamaModalCriarUsuario(){
+    chamaModalCriarUsuario() {
       this.modalCriarUsuario = true;
     },
 
-    closeModalEditarUsuario(){
+    closeModalEditarUsuario() {
       this.modalEditarUsuario = false;
       this.updateLista();
       this.showMessage();
     },
 
-    onSelected(usuario){
+    onSelected(usuario) {
       console.log(usuario);
       this.usuarioSelected = usuario;
       this.modalEditarUsuario = true;
     },
 
-    onCloseModal(){
+    onCloseModal() {
       this.modalCriarUsuario = false;
-      //---
       this.updateLista();
-      //---
       this.showMessage();
     }
   }

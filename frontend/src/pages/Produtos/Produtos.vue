@@ -4,21 +4,28 @@
       <h1>Produtos</h1>
 
       <v-card flat class="border mt-3">
-        <v-card-item >
+        <v-card-item>
           <template v-slot:append>
             <v-btn color="primary" @click="chamaModalCriarProduto()">Adicionar Produto</v-btn>
-            <ModalCriarProduto v-if="this.modalCriarProduto" @closeModal="onCloseModal()" />
+            <ModalCriarProduto v-if="modalCriarProduto" @closeModal="onCloseModal()" />
           </template>
-          <!-- <v-text-field prepend-icon="mdi-searchmdi mdi-magnify" v-model="pesquisar" @keyup.enter="onEnterPesquisar" clearable label="Pesquisar" outlined></v-text-field> -->
         </v-card-item>
 
-        <v-card-item class="">
-          <v-list lines="one" select-strategy="single-leaf" >
+        <v-card-item>
+          <!-- Spinner de carregamento -->
+          <v-progress-circular
+            v-if="loading"
+            indeterminate
+            color="primary"
+            class="ma-5"
+          ></v-progress-circular>
+
+          <!-- Conteúdo da tabela -->
+          <v-list v-else lines="one" select-strategy="single-leaf">
             <v-row no-gutters class="border-b">
               <v-col>
                 <v-sheet class="pa-2 ma-2">
                   <v-list-item-subtitle>Nome</v-list-item-subtitle>
-
                 </v-sheet>
               </v-col>
               <v-col>
@@ -37,27 +44,29 @@
                 </v-sheet>
               </v-col>
             </v-row>
-            <v-div v-for="produto,index in produtos" :key="index">
 
-              <ItemProduto :produto="produto" @dblclick="onSelected(produto)" @updateLista="updateLista()"/>
+            <v-div v-for="produto in produtos" :key="produto.id">
+              <ItemProduto :produto="produto" @dblclick="onSelected(produto)" @updateLista="updateLista" />
             </v-div>
-
-
-            <Tarefa/>
-            <Tarefa/>
           </v-list>
-        </v-card-item>
 
+          <!-- Paginação -->
+          <Pagination
+            :offset="currentPage - 1"
+            :total="totalProducts"
+            :limit="10"
+            @change-page="handlePageChange"
+            class="mt-4"
+          />
+        </v-card-item>
       </v-card>
 
-    <!-- Elemento de notificação -->
-    <NotificationDefault ref="notificationRef" />
+      <!-- Elemento de notificação -->
+      <NotificationDefault ref="notificationRef" />
 
-    <!-- Modal Editar Usuário -->
-    <ModalEditarUsuario v-if="modalEditarProduto" @closeModal="closeModalEditarProduto()" :produto="this.produtoSelected" />
-
+      <!-- Modal Editar Produto -->
+      <ModalEditarProduto v-if="modalEditarProduto" @closeModal="closeModalEditarProduto()" :produto="produtoSelected" />
     </v-container>
-
   </base-layout>
 </template>
 
@@ -66,82 +75,83 @@ import BaseLayout from '../../layouts/BaseLayout.vue';
 import { useNotificationsStore } from '@/stores/notifications';
 import NotificationDefault from '@/components/NotificationDefault.vue';
 import ItemProduto from '@/components/Produtos/ItemProduto.vue';
-import ModalCriarProduto from '@/components/Produtos/ModalCriarProduto.vue'
-import ModalEditarProduto from '@/components/Produtos/ModalEditarProduto.vue'
-
-// import axios from 'axios';
-import {api} from '@/plugins/api'
-
+import ModalCriarProduto from '@/components/Produtos/ModalCriarProduto.vue';
+import ModalEditarProduto from '@/components/Produtos/ModalEditarProduto.vue';
+import Pagination from '@/components/Pagination.vue'; // Importação do componente de paginação
+import { api } from '@/plugins/api';
 
 export default {
-  components: { BaseLayout, NotificationDefault, ItemProduto, ModalCriarProduto, ModalEditarProduto },
+  components: { BaseLayout, NotificationDefault, ItemProduto, ModalCriarProduto, ModalEditarProduto, Pagination },
   name: "Produtos",
 
   data() {
     return {
       pesquisar: null,
-      modalCriarProduto:false,
-      modalEditarProduto:false,
-      produtoSelected:null,
-      produtos:[
-        {id:1, name:"Leite", description:"Leite integral desnatado", price:"4.50", categoria_name:"Laticínios"},
-      ],
+      modalCriarProduto: false,
+      modalEditarProduto: false,
+      produtoSelected: null,
+      produtos: [],
+      loading: false,
+      currentPage: 1,
+      totalProducts: 0, // Total de produtos obtido da API
     }
   },
 
-  created(){
-    this.updateLista();
+  created() {
+    this.fetchPage(this.currentPage);
   },
 
-  methods:{
-
-    async updateLista(){
-      // console.log("ctx token")
-      // console.log(this.$auth.token);
+  methods: {
+    async fetchPage(page) {
+      console.log("Fetching page:", page);
+      this.loading = true;
       await api(this)
-        .get("produto/all")
+        .get(`produto/pagination/${page}`)
         .then((res) => {
           this.produtos = res.data.data.produtos;
-          // this.pages = res.data.count;
+          this.totalProducts = res.data.data.count; // Total de produtos obtido da API
         })
-        .catch((e) => console.log(e));
-      // console.log(this.usuarios);
-      //---
-      console.log(useNotificationsStore().messages);
-      // if(useNotificationsStore().messages.length > 0){
-      //   this.showMessage();
-      // }
+        .catch((e) => console.log(e))
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
-    showMessage(){
+    handlePageChange(page) {
+      this.currentPage = page;
+      this.fetchPage(page);
+    },
+
+    async updateLista() {
+      this.fetchPage(this.currentPage);
+    },
+
+    showMessage() {
       useNotificationsStore().messages.forEach(message => {
         this.$refs.notificationRef.addNotification(message);
       });
-      //---
       useNotificationsStore().clearMessage();
     },
 
-    chamaModalCriarProduto(){
+    chamaModalCriarProduto() {
       this.modalCriarProduto = true;
     },
 
-    closeModalEditarProduto(){
+    closeModalEditarProduto() {
       this.modalEditarProduto = false;
       this.updateLista();
       this.showMessage();
     },
 
-    onSelected(produto){
+    onSelected(produto) {
       console.log(produto);
       this.produtoSelected = produto;
       this.modalEditarProduto = true;
     },
 
-    onCloseModal(){
+    onCloseModal() {
       this.modalCriarProduto = false;
-      //---
       this.updateLista();
-      //---
       this.showMessage();
     }
   }

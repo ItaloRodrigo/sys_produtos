@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ProdutoController extends Controller
 {
@@ -124,52 +125,54 @@ class ProdutoController extends Controller
 
     public function create(Request $request){
         try {
+            Log::info('Request Data:', $request->all());
 
             $request->validate([
                 'name'            => [new RuleRequired, new RuleStringMax(50)],
                 'description'     => [new RuleRequired, new RuleStringMax(200)],
                 'price'           => [new RuleRequired, new RuleValuePositive],
-                'date_expiration' => [new RuleRequired, new RuleValidateDate],
+                'date_expiration' => [new RuleRequired, new RuleValidateDate, 'date_format:Y-m-d H:i:s'],
                 'image'           => [new RuleRequired],
                 'id_categoria'    => [new RuleRequired],
             ]);
-            //---
-            $existe = Categoria::find($request->id_categoria);
-            if($existe){
-                if($request->hasFile('image')){
-                    // pega o filename com a extensão
-                    $filenameWithExt = $request->file('image')->getClientOriginalName();
-                    // pega o filename sem extensão
-                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    // pega apenas a extensão
-                    $extension = $request->file('image')->getClientOriginalExtension();
-                    // Salva o filename com o time
-                    $fileNameToStore= $filename.'_'.time().'.'.$extension;
-                    // Sobe a imagem no servidor
-                    $path = $request->file('image')->storeAs('public/img', $fileNameToStore);
-                } else {
-                    $fileNameToStore = 'noimage.png';
-                }
-                //save in database
-                $produto = Produto::create([
-                    'name'            => $request->name,
-                    'description'     => mb_strtolower($request->description),
-                    'price'           => $request->price,
-                    'date_expiration' => mb_strtolower($request->date_expiration),
-                    'image'           => $fileNameToStore,
-                    'id_categoria'    => $request->id_categoria
-                ]);
-                //---
-                return Response::successWithData("Produto adicionado com sucesso!", [
-                    "produto" => $produto
-                ]);
-            }else{
-                return Response::error([
-                    'categoria' => 'essa categoria não existe'
-                ]);
+
+            // Verifica se a categoria existe
+            $categoria = Categoria::find($request->id_categoria);
+            if (!$categoria) {
+                return Response::error(['categoria' => 'Essa categoria não existe']);
             }
+            //---
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filenameWithExt = $file->getClientOriginalName();
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+                $path = $file->storeAs('public/img', $fileNameToStore);
+            } else {
+                $fileNameToStore = 'noimage.png';
+            }
+
+            // Criação do produto
+            $produto = Produto::create([
+                'name'            => $request->name,
+                'description'     => mb_strtolower($request->description),
+                'price'           => $request->price,
+                'date_expiration' => $request->date_expiration,
+                'image'           => $fileNameToStore,
+                'id_categoria'    => $request->id_categoria,
+            ]);
+
+            // Retorno de sucesso
+            return Response::successWithData("Produto adicionado com sucesso!", [
+                "produto" => $produto
+            ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation Error:', $e->errors());
             return Response::error($e->errors());
+        } catch (\Exception $e) {
+            Log::error('General Error:', ['message' => $e->getMessage()]);
+            return Response::error(['error' => 'Ocorreu um erro ao adicionar o produto.'.$e->getMessage()]);
         }
     }
 
@@ -217,67 +220,76 @@ class ProdutoController extends Controller
      * ),
      */
 
-    public function update(Request $request){
+     public function update(Request $request, $id) {
         try {
+            Log::info('Request Data:', $request->all());
 
+            // Validação dos dados
             $request->validate([
-                'id'              => [new RuleRequired],
                 'name'            => [new RuleRequired, new RuleStringMax(50)],
                 'description'     => [new RuleRequired, new RuleStringMax(200)],
                 'price'           => [new RuleRequired, new RuleValuePositive],
-                'date_expiration' => [new RuleRequired, new RuleValidateDate],
-                'image'           => [new RuleRequired],
+                'date_expiration' => [new RuleRequired, new RuleValidateDate, 'date_format:Y-m-d H:i:s'],
+                'image'           => [new RuleRequired], // O campo imagem é opcional na atualização
                 'id_categoria'    => [new RuleRequired],
             ]);
-            //---
-            $produto = Produto::find($request->id);
-            if($produto){
-                $categoria = Categoria::find($request->id_categoria);
-                if($categoria){
-                    if($request->hasFile('image')){
-                        //pega o filename com a extensão
-                        $filenameWithExt = $request->file('image')->getClientOriginalName();
-                        // pega o filename sem extensão
-                        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                        // pega apenas a extensão
-                        $extension = $request->file('image')->getClientOriginalExtension();
-                        // Salva o filename com o time
-                        $fileNameToStore= $filename.'_'.time().'.'.$extension;
-                        // Sobe a imagem no servidor
-                        $path = $request->file('image')->storeAs('public/img', $fileNameToStore);
-                        //----------------------------------------------------------------------
-                        Storage::disk('public')->delete('img/'.$produto->image);
-                        //---
-                    } else {
-                        $fileNameToStore = 'noimage.png'; //$produto->image
-                    }
-                    //save in database
-                    Produto::where('id', $request->id )->update([
-                        'name'            => $request->name,
-                        'description'     => mb_strtolower($request->description),
-                        'price'           => $request->price,
-                        'date_expiration' => mb_strtolower($request->date_expiration),
-                        'image'           => $fileNameToStore,
-                        'id_categoria'    => $request->id_categoria
-                    ]);
-                    //---
-                    return Response::successWithData("Produto atualizado com sucesso!", [
-                        "produto" => Produto::find($request->id)
-                    ]);
-                }else{
-                    return Response::error([
-                        'categoria' => 'essa categoria não existe'
-                    ]);
-                }
-            }else{
-                return Response::error([
-                    'produto' => 'esse produto não existe'
-                ]);
+
+            // Verifica se a categoria existe
+            $categoria = Categoria::find($request->id_categoria);
+            if (!$categoria) {
+                return Response::error(['categoria' => 'Essa categoria não existe']);
             }
+
+            // Localiza o produto
+            $produto = Produto::find($id);
+            if (!$produto) {
+                return Response::error(['produto' => 'Produto não encontrado']);
+            }
+
+            // Atualiza os dados do produto
+            $produto->name = $request->name;
+            $produto->description = mb_strtolower($request->description);
+            $produto->price = $request->price;
+            $produto->date_expiration = $request->date_expiration;
+            $produto->id_categoria = $request->id_categoria;
+
+            // Atualiza a imagem se fornecida
+            if ($request->hasFile('image')) {
+                // Remove a imagem antiga se não for a padrão
+                if ($produto->image && $produto->image !== 'noimage.png') {
+                    $oldImagePath = storage_path('app/public/img/' . $produto->image);
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+
+                // Salva a nova imagem
+                $file = $request->file('image');
+                $filenameWithExt = $file->getClientOriginalName();
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+                $path = $file->storeAs('public/img', $fileNameToStore);
+                $produto->image = $fileNameToStore;
+            }
+
+            // Salva as alterações
+            $produto->save();
+
+            // Retorno de sucesso
+            return Response::successWithData("Produto atualizado com sucesso!", [
+                "produto" => $produto
+            ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation Error:', $e->errors());
             return Response::error($e->errors());
+        } catch (\Exception $e) {
+            Log::error('General Error:', ['message' => $e->getMessage()]);
+            return Response::error(['error' => 'Ocorreu um erro ao atualizar o produto.'.$e->getMessage()]);
         }
     }
+
+
 
     /**
      * Produtos Controller
@@ -357,10 +369,10 @@ class ProdutoController extends Controller
              * 20 - 30
              */
 
-            $pagination = Pagination::pagination($page,"produto");
+            $pagination = Pagination::paginationProdutos($page);
             //---
             return Response::successWithData('ok', [
-                "produtos"   => $pagination['records'],
+                "produtos"   => $pagination["records"],
                 "count"      => $pagination['count']
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {

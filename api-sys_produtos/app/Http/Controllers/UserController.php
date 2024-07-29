@@ -152,19 +152,30 @@ class UserController extends Controller
                 'id'       => [new RuleRequired],
                 'name'     => [new RuleRequired, new RuleStringMax(255)],
                 'email'    => [new RuleRequired, new RuleStringMax(255)],
-                'password' => [new RuleRequired, new RuleStringMax(255)],
+                'password' => ['nullable', 'min:6'],
             ]);
 
-            $user = User::where('id','=',$request->id)->update([
-                'name'     => $request->name,
-                'email'    => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
+            // Encontra o usuário pelo ID
+            $user = User::findOrFail($request->id);
+
+            // Atualiza o usuário com os dados fornecidos
+            $user->name = $request->name;
+            $user->email = $request->email;
+
+            // Atualiza a senha se fornecida
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->password);
+            }
+
+            $user->save(); // Salva as alterações
+
             return Response::successWithData('Usuário atualizado com sucesso!', [
-                'user' => User::find($request->id)
+                'user' => $user
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return Response::error($e->errors());
+        } catch (\Exception $e) {
+            return Response::error(['error' => $e->getMessage()]);
         }
     }
 
@@ -245,18 +256,12 @@ class UserController extends Controller
              */
             $pagination = Pagination::paginationUser($page);
             //---
-            return response()->json([
-                "status" => 200,
-                "info" => "success",
-                "users" => $pagination['records'],
-                "count" => $pagination['count']
-            ], 200);
+            return Response::successWithData('ok', [
+                "users"   => $pagination["records"],
+                "count"      => $pagination['count']
+            ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json([
-                "status" => 400,
-                "info" => "error",
-                "erros" => $e->errors(),
-            ], 400);
+            return Response::error($e->errors());
         }
     }
 }

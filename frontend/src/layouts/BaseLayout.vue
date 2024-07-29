@@ -1,5 +1,4 @@
 <template>
-
   <v-card>
     <v-layout>
       <Loading/>
@@ -8,18 +7,18 @@
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
         <v-btn size="small" class="border bg-primary" @click="selfback()">
-          <v-icon >mdi mdi-arrow-left-circle</v-icon>
+          <v-icon>mdi mdi-arrow-left-circle</v-icon>
         </v-btn>
 
         <v-btn size="small" class="border mx-1 bg-primary" to="/">
-          <v-icon >mdi-home</v-icon>
+          <v-icon>mdi-home</v-icon>
         </v-btn>
 
         <v-btn size="small" class="border mr-1 bg-red-darken-2" to="/logout">
-          <v-icon >mdi-exit-to-app</v-icon>
+          <v-icon>mdi-exit-to-app</v-icon>
         </v-btn>
 
-        <v-toolbar-title >{{titlecard}} </v-toolbar-title>
+        <v-toolbar-title>{{ titlecard }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
 
@@ -33,13 +32,10 @@
         temporary
       >
         <v-list>
-          <v-list-subheader>
-            Menu
-          </v-list-subheader>
-          <v-list-item v-for="item in items" :key="item.value" :title="item.title" :prepend-icon="item.icon" :value="item.value" :target="item.target" :href="item.to" link>
+          <v-list-subheader>Menu</v-list-subheader>
+          <v-list-item v-for="item in items" :key="item.value" :title="item.title" :prepend-icon="item.icon" :value="item.value" :target="item.target" :href="item.to" >
           </v-list-item>
         </v-list>
-
       </v-navigation-drawer>
 
       <v-main class="border-0">
@@ -51,23 +47,23 @@
           </v-breadcrumbs>
         </v-container>
 
-        <slot ></slot>
+        <slot></slot>
       </v-main>
     </v-layout>
   </v-card>
 </template>
 
 <script>
+import Loading from '@/components/Loading.vue';
 
-  import Loading from '@/components/Loading.vue';
-
-  export default {
-    name: "BaseLayout",
-    props: ['titlecard'],
-    components:{
-      Loading,
-    },
-    data: () => ({
+export default {
+  name: "BaseLayout",
+  props: ['titlecard'],
+  components: {
+    Loading,
+  },
+  data() {
+    return {
       drawer: false,
       group: null,
       API_URL: import.meta.env.VITE_API_URL,
@@ -76,43 +72,64 @@
           title: 'Home',
           value: '01',
           icon: "mdi-home",
-          to:"/",
-          target:""
+          to: "/",
+          target: ""
         },
         {
           title: 'Usuários',
           value: '02',
           icon: 'mdi-account',
-          to:"/users",
-          target:""
+          to: "/users",
+          target: ""
         },
         {
           title: 'Produtos',
           value: '03',
           icon: 'mdi mdi-coffee',
-          to:"/produtos",
-          target:""
+          to: "/produtos",
+          target: ""
+        },
+        {
+          title: 'Categorias',
+          value: '04',
+          icon: 'mdi mdi-coffee',
+          to: "/categorias",
+          target: ""
         },
         {
           title: 'API - Swagger',
-          value: '03',
+          value: '05',
           icon: 'mdi-api',
-          to:import.meta.env.VITE_API_URL+"/documentation#/default",
-          target:"_blank"
+          to: import.meta.env.VITE_API_URL + "/documentation#/default",
+          target: "_blank"
+        },
+        {
+          title: 'Sobre',
+          value: '06',
+          icon: 'mdi-information',
+          to: "/about",
+          target: ""
         },
       ],
-    }),
+    }
+  },
 
-    watch: {
-      group () {
-        this.drawer = false
-      },
-    },
+  watch: {
+    group() {
+      this.drawer = false;
+    }
+  },
 
-    methods:{
-      selfback(){
-        this.$router.go(-1);
-      },
+  methods: {
+    selfback() {
+      this.$router.go(-1);
     }
   }
+}
 </script>
+
+<style scoped>
+.v-toolbar-title {
+  flex-grow: 1;
+}
+</style>

@@ -1,100 +1,187 @@
 <template>
-  <base-layout titlecard="Home">
-
+  <base-layout titlecard="Dashboard">
     <v-container>
+      <v-card class="pa-5 elevation-0">
+        <v-card-title>
+          <span class="headline">Dashboard</span>
+        </v-card-title>
+        <!-- Indicador de Carregamento -->
+        <v-row v-if="loading" class="d-flex justify-center">
+          <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
+        </v-row>
 
-      <v-card class="mx-auto" prepend-icon="mdi-account" title="Sys User v1.0">
-        <template v-slot:prepend>
-          <v-icon size="x-large"></v-icon>
-        </template>
+        <!-- Gráficos de Dados -->
+        <v-row v-else>
+          <!-- Gráfico de Usuários -->
+          <v-col cols="12" md="4">
+            <v-card>
+              <v-card-title>
+                <span class="headline">Usuários</span>
+              </v-card-title>
+              <v-card-subtitle>
+                Distribuição de Usuários
+              </v-card-subtitle>
+              <v-card-text>
+                <Bar :data="formattedUserData" :options="chartOptions" />
+              </v-card-text>
+            </v-card>
+          </v-col>
 
-        <v-card-text class="text-h4 py-2 text-center">
-          <strong>Seja bem-vindo ao <span class="text-primary">Sys User v1.0</span> </strong>
-        </v-card-text>
+          <!-- Gráfico de Produtos -->
+          <v-col cols="12" md="4">
+            <v-card>
+              <v-card-title>
+                <span class="headline">Produtos</span>
+              </v-card-title>
+              <v-card-subtitle>
+                Distribuição de Produtos
+              </v-card-subtitle>
+              <v-card-text>
+                <Pie :data="formattedProductData" :options="chartOptions" />
+              </v-card-text>
+            </v-card>
+          </v-col>
 
-        <v-card-text class="text-h6 py-2 text-justify">
-          <p class="custom-justified">
-            <strong>Resumo Profissional:</strong>
-            Atuo há mais de 5 anos como desenvolvedor fullstack, adquiri experiência ao trabalhar com ferramentas
-            das stacks de programação back-end e front-end, ao longo dos anos conquistei maturidade em análises de
-            processos para abstração de regras de negócios aplicadas à sistemas web e mobile. Desenvolvi habilidades
-            no âmbito da Segurança da Informação aplicado à penetração de dados, segurança de redes e planos de
-            segurança
-            da informação, no âmbito da Ciência de Dados aplicado à sistemasde predição com DNN, RNA, e Algoritmos de
-            Otimização.
-          </p>
-          <p class="custom-justified">Trabalhei em desenvolvimento de web sites e sistemas computacionais atuando no
-            back e no front das aplicações, implementação e desenvolvimento de técnicas computacionais para otimização
-            de
-            processos.
-            Trabalhei com as seguintes ferramentas e tecnologias: HTML, CSS, Bootstrap 5, Vue.js, Vuetify, Javascript,
-            Node.js,
-            Java, Git, GitHub, Figma, Pré Processadores CSS (SCSS), SCRUM. Participando de todas as fases de
-            desenvolvimento,
-            indo desde o levantamento de requisitos junto ao cliente e
-            modelagem de layouts até a implementação, testes e entrega do sistema, utilizando a metodologia ágil
-            SCRUM. Os Projetos são relacionados a monitoramento em tempo real, processos produtivos, gestão e
-            área administrativa. Também sou pesquisador na área de otimização de processos e computação aplicada, com
-            alguns
-            artigos e
-            capítulos de livros publicados em periódicos internacionais. Professor de cursos de curta duração em
-            Segurança da
-            Informação e
-            exporadicamente participo de elaboração de propostas de projetos de inovação na área de engenharia junto ao
-            desenvolvimento de software.</p>
-        </v-card-text>
-
-        <v-card-text title="teste" class="text-h6">
-          <h3 class="mt-1 subtitle">Formação Acadêmica</h3>
-          <v-list-item>
-            <v-list-item-title>Mestre em Engenharia com ênfase em Otimização de Processos
-              Industriais</v-list-item-title>
-
-            <v-list-item-title>Bacharel em Ciência da Computação</v-list-item-title>
-          </v-list-item>
-        </v-card-text>
-
-
-        <v-card-actions>
-          <v-list-item class="w-100">
-            <template v-slot:prepend>
-              <v-avatar color="grey-darken-3" image="@/assets/img/italo-rodrigo.jpg"></v-avatar>
-            </template>
-
-            <v-list-item-title>Ítalo Rodrigo</v-list-item-title>
-
-            <v-list-item-subtitle>Dev Fullstack</v-list-item-subtitle>
-
-            <template v-slot:append>
-              <div class="justify-self-end">
-                <v-btn class="me-2 text-none" color="primary" prepend-icon="mdi-linkedin" target="_blank" href="https://www.linkedin.com/in/italo-computation/" variant="flat">
-                  @italo-computation
-                </v-btn>
-                <span class="me-1"></span>
-                <v-icon class="me-1" icon="mdi-share-variant"></v-icon>
-                <span class="subheading">130</span>
-              </div>
-            </template>
-          </v-list-item>
-        </v-card-actions>
+          <!-- Gráfico de Categorias -->
+          <v-col cols="12" md="4">
+            <v-card>
+              <v-card-title>
+                <span class="headline">Categorias</span>
+              </v-card-title>
+              <v-card-subtitle>
+                Distribuição de Categorias
+              </v-card-subtitle>
+              <v-card-text>
+                <Doughnut :data="formattedCategoryData" :options="chartOptions" />
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-card>
-
     </v-container>
   </base-layout>
 </template>
 
 <script>
-import BaseLayout from '../layouts/BaseLayout.vue'
+import { Bar, Pie, Doughnut } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement } from 'chart.js';
+import { api } from '@/plugins/api';
+
+// Registra os componentes do Chart.js
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement);
+
 export default {
-  components: { BaseLayout },
-  name: "Dashboard",
+  name: 'Dashboard',
+  components: { Bar, Pie, Doughnut },
   data() {
     return {
-      // counter: this.$auth.getCounter
+      loading: true,
+      userData: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Número de Usuários',
+            data: [],
+            backgroundColor: ['#FF6384'],
+            borderColor: '#fff',
+            borderWidth: 1
+          }
+        ]
+      },
+      productData: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Número de Produtos',
+            data: [],
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+            borderColor: '#fff',
+            borderWidth: 1
+          }
+        ]
+      },
+      categoryData: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Número de Categorias',
+            data: [],
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+            borderColor: '#fff',
+            borderWidth: 1
+          }
+        ]
+      },
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    };
+  },
+  computed: {
+    formattedUserData() {
+      // Exemplo de transformação de dados para o gráfico de usuários
+      return {
+        labels: this.userData.labels,
+        datasets: [{
+          label: 'Número de Usuários',
+          data: this.userData.datasets[0]?.data || [],
+          backgroundColor: ['#FF6384'],
+          borderColor: '#fff',
+          borderWidth: 1
+        }]
+      };
+    },
+    formattedProductData() {
+      // Exemplo de transformação de dados para o gráfico de produtos
+      return {
+        labels: this.productData.labels,
+        datasets: [{
+          label: 'Número de Produtos',
+          data: this.productData.datasets[0]?.data || [],
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+          borderColor: '#fff',
+          borderWidth: 1
+        }]
+      };
+    },
+    formattedCategoryData() {
+      // Exemplo de transformação de dados para o gráfico de categorias
+      return {
+        labels: this.categoryData.labels,
+        datasets: [{
+          label: 'Número de Categorias',
+          data: this.categoryData.datasets[0]?.data || [],
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+          borderColor: '#fff',
+          borderWidth: 1
+        }]
+      };
     }
   },
-  mounted(){
-    console.log(this.$auth.isAuth);
+  async created() {
+    try {
+      const response = await api(this).get('/dashboard/get');
+      const data = response.data;
+
+      this.userData = data.userData;
+      this.productData = data.productData;
+      this.categoryData = data.categoryData;
+    } catch (error) {
+      console.error('Erro ao buscar dados do dashboard:', error);
+    } finally {
+      this.loading = false;
+    }
   }
-}
+};
 </script>
+
+<style scoped>
+.v-card {
+  margin-bottom: 20px;
+}
+
+.v-progress-circular {
+  margin: auto;
+}
+</style>
