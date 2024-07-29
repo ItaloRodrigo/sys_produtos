@@ -9,6 +9,42 @@ Este projeto é composto por duas principais stacks: uma aplicação frontend co
 
 ---
 
+## Funcionalidades
+
+### Usuários
+
+- **Listagem de Usuários**: Exibe todos os usuários cadastrados em uma tabela com suporte a paginação.
+- **Consulta de Usuários**: Permite buscar usuários por critérios específicos, como nome ou email.
+- **Criação de Usuários**: Permite adicionar novos usuários ao sistema com dados básicos como nome, email e senha.
+- **Edição de Usuários**: Permite atualizar informações dos usuários existentes.
+- **Exclusão de Usuários**: Permite remover usuários do sistema.
+
+### Produtos
+
+- **Listagem de Produtos**: Exibe todos os produtos cadastrados em uma tabela com suporte a paginação.
+- **Consulta de Produtos**: Permite buscar produtos por critérios específicos, como nome ou categoria.
+- **Criação de Produtos**: Permite adicionar novos produtos com detalhes como nome, descrição, preço e imagem.
+- **Edição de Produtos**: Permite atualizar informações dos produtos existentes.
+- **Exclusão de Produtos**: Permite remover produtos do sistema.
+
+### Categorias
+
+- **Listagem de Categorias**: Exibe todas as categorias cadastradas em uma tabela com suporte a paginação.
+- **Consulta de Categorias**: Permite buscar categorias por critérios específicos, como nome.
+- **Criação de Categorias**: Permite adicionar novas categorias ao sistema.
+- **Edição de Categorias**: Permite atualizar informações das categorias existentes.
+- **Exclusão de Categorias**: Permite remover categorias do sistema.
+
+## Processos de Listagem e Paginação
+
+Todos os recursos de listagem de dados no sistema suportam paginação para gerenciar grandes volumes de informações de forma eficiente. Isso permite aos usuários navegar facilmente pelos dados e acessar informações específicas sem sobrecarregar a interface.
+
+## Tecnologias Utilizadas
+
+- **Frontend**: Vue.js, Vuetify, Vite, Chart.js
+- **Backend**: Laravel, PHP, MySQL
+- **Serviços**: Docker, Nginx, Redis
+
 ## Pré-requisitos
 
 Antes de começar, certifique-se de ter o Docker e o Docker Compose instalados em seu sistema. Você pode baixar e instalar o Docker a partir do [site oficial do Docker](https://www.docker.com/get-started).
