@@ -93,7 +93,7 @@ Antes de começar, certifique-se de ter o Docker e o Docker Compose instalados e
 
     - **Aplicação Laravel**: `http://localhost:8989`
     - **PHPMyAdmin**: `http://localhost:8080` (usuário: root, senha: root)
-    - **Swagger**: `http://localhost:8989/api/docs` (documentação da API Laravel)
+    - **Swagger**: `http://localhost:8989/api/documentation` (documentação da API Laravel)
     - **AppVue**: `http://localhost:4000` (usuário: admin@gmail.com, senha: admin)
 
 ---
@@ -169,7 +169,7 @@ L5_SWAGGER_CONST_HOST="${APP_URL}/api/v1"
 
 ## Notas Adicionais
 
-- **Swagger**: A documentação da API está disponível através do Swagger UI na URL `http://localhost:8989/api/docs`. Certifique-se de que o serviço de backend está rodando para acessar a documentação.
+- **Swagger**: A documentação da API está disponível através do Swagger UI na URL `http://localhost:8989/api/documentation`. Certifique-se de que o serviço de backend está rodando para acessar a documentação.
 
 ---
 
