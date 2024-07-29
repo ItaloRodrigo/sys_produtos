@@ -1,41 +1,140 @@
 # Sys Produtos
 
-## Configurações da "api-sys_produtos"
+Este projeto é composto por duas principais stacks: uma aplicação frontend construída com Vue.js e uma API backend construída com Laravel. Abaixo estão as instruções detalhadas para configurar e executar o projeto localmente usando Docker.
 
-- nginx
-- mysql:5.7.22
-- phpmyadmin
-- redis
+## Estrutura do Projeto
 
-## Dependências utilizadas
-- backend:
-    - darkaonline/l5-swagger (documentação)
-- frontend:
-    - vite
-    - vue-axios
-    - vuetify
-    - pinia
+- **Frontend**: Aplicação Vue.js com Vite.
+- **Backend**: API Laravel com suporte para Swagger e outras ferramentas, autenticação JWT (Token Pessoal utilizando o pacote `laravel/sanctum`).
 
-## Informes dos serviços
-- backend (Laravel): http://localhost:8989/api
-- frontend (Vue.js + Vuetify): http://localhost:3000
-- docs (Swagger): http://localhost:8989/api/documentation
-- phpmyadmin: http://localhost:8080
+---
 
-### Para instalar e rodar com docker
+## Pré-requisitos
 
-Arquivo: docker-compose.yml
+Antes de começar, certifique-se de ter o Docker e o Docker Compose instalados em seu sistema. Você pode baixar e instalar o Docker a partir do [site oficial do Docker](https://www.docker.com/get-started).
 
-~~~~php
-docker-compose up -d
-~~~~
+---
 
-## configuração do .env (Banco de dados MySQL)
-~~~php
+## Instalação e Execução
+
+### Frontend
+
+1. **Navegue para o diretório do frontend**:
+
+    ```bash
+    cd path/to/frontend
+    ```
+
+2. **Crie e inicie os containers Docker**:
+
+    ```bash
+    docker-compose up --build
+    ```
+
+    Isso criará um container para a aplicação Vue.js e o iniciará na porta `4000`.
+
+3. **Acesse a aplicação**:
+
+    Abra o navegador e vá para `http://localhost:4000` para visualizar a aplicação frontend, utilize as credenciais (usuário: admin@gmail.com, senha: admin).
+
+### Backend
+
+1. **Navegue para o diretório do backend**:
+
+    ```bash
+    cd path/to/backend
+    ```
+
+2. **Crie e inicie os containers Docker**:
+
+    ```bash
+    docker-compose up --build
+    ```
+
+    Isso criará os containers para a aplicação Laravel, o banco de dados MySQL, o PHPMyAdmin e o Redis. A aplicação Laravel será servida pelo Nginx na porta `8989`.
+
+3. **Acesse os serviços**:
+
+    - **Aplicação Laravel**: `http://localhost:8989`
+    - **PHPMyAdmin**: `http://localhost:8080` (usuário: root, senha: root)
+    - **Swagger**: `http://localhost:8989/api/docs` (documentação da API Laravel)
+    - **AppVue**: `http://localhost:4000` (usuário: admin@gmail.com, senha: admin)
+
+---
+
+## Dependências
+
+### Frontend
+
+- `@mdi/font`: 7.0.96
+- `chart.js`: ^4.4.3
+- `core-js`: ^3.34.0
+- `jquery`: ^3.7.1
+- `moment`: ^2.30.1
+- `pinia-plugin-persistedstate`: ^3.2.1
+- `roboto-fontface`: *
+- `vue`: ^3.4.0
+- `vue-axios`: ^3.5.2
+- `vue-chartjs`: ^5.3.1
+- `vue-the-mask`: ^0.11.1
+- `vuetify`: ^3.5.0
+
+### Backend
+
+- `php`: ^8.0.2
+- `darkaonline/l5-swagger`: ^8.6
+- `guzzlehttp/guzzle`: ^7.2
+- `laravel/framework`: ^9.19
+- `laravel/sanctum`: ^3.3
+- `laravel/tinker`: ^2.7
+
+**Dependências de Desenvolvimento**:
+
+- `fakerphp/faker`: ^1.9.1
+- `laravel/pint`: ^1.0
+- `laravel/sail`: ^1.0.1
+- `mockery/mockery`: ^1.4.4
+- `nunomaduro/collision`: ^6.1
+- `phpunit/phpunit`: ^9.5.10
+- `spatie/laravel-ignition`: ^1.0
+
+---
+
+## Configurações do `.env`
+
+### Frontend
+
+Não há configurações específicas do `.env` para o frontend neste projeto.
+
+### Backend
+
+Crie um arquivo `.env` na raiz do diretório do backend com o seguinte conteúdo:
+
+```env
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=base64:ZAtBhPpJmJEhuWSXUyl2PU1TgFVkdhQ8JoK/BIHS1Zk=
+APP_DEBUG=true
+APP_URL=http://localhost:8989
+
 DB_CONNECTION=mysql
 DB_HOST=db
 DB_PORT=3306
 DB_DATABASE=sys_produtos
 DB_USERNAME=root
 DB_PASSWORD=root
-~~~
+
+
+L5_SWAGGER_GENERATE_ALWAYS=true
+L5_SWAGGER_CONST_HOST="${APP_URL}/api/v1"
+```
+
+---
+
+## Notas Adicionais
+
+- **Swagger**: A documentação da API está disponível através do Swagger UI na URL `http://localhost:8989/api/docs`. Certifique-se de que o serviço de backend está rodando para acessar a documentação.
+
+---
+
+Com essas instruções, você deve ser capaz de configurar e executar o projeto em seu ambiente local usando Docker. Se você encontrar problemas ou tiver dúvidas, sinta-se à vontade para buscar ajuda ou revisar a documentação oficial do Docker e das ferramentas usadas.
