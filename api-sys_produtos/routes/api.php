@@ -43,7 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('user')->group(function(){
-        Route::get('/get/{id}', [ProdutoController::class, 'show']);
+        Route::get('/get/{id}', [ProdutoController::class, 'get']);
         Route::get('/all', [UserController::class, 'all']);
         Route::post('/create', [UserController::class, 'create']);
         Route::post('/update', [UserController::class, 'update']);
@@ -52,7 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('produto')->group(function(){
-        Route::get('/get/{id}', [ProdutoController::class, 'show']);
+        Route::get('/get/{id}', [ProdutoController::class, 'get']);
         Route::get('/all', [ProdutoController::class, 'all']);
         Route::post('/create', [ProdutoController::class, 'create']);
         Route::post('/update/{id}', [ProdutoController::class, 'update']);

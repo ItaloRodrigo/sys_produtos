@@ -21,6 +21,12 @@ class UserController extends Controller
      *     path="/api/user/get/{id}",
      *     summary="Get Usuário",
      *     tags={"Usuário"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK"
@@ -182,19 +188,14 @@ class UserController extends Controller
    /**
      * Usuário Controller
      * @OA\Get(
-     *     path="/api/user/delete",
+     *     path="/api/user/delete/{id}",
      *     summary="Delete Usuário",
      *     tags={"Usuário"},
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="id",
-     *                     type="int"
-     *                 ),
-     *              )
-     *          )
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -225,19 +226,14 @@ class UserController extends Controller
     /**
      * Usuário Controller
      * @OA\Post(
-     *     path="/api/user/pagination",
+     *     path="/api/user/pagination/{page}",
      *     summary="Pagination Usuário",
      *     tags={"Usuário"},
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="page",
-     *                     type="int"
-     *                 ),
-     *              )
-     *          )
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,

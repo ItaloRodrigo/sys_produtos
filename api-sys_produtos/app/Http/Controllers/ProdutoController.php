@@ -22,17 +22,21 @@ class ProdutoController extends Controller
     /**
      * Produtos Controller
      * @OA\Get(
-     *     path="/api/produto/get",
+     *     path="/api/produto/get/{id}",
      *     summary="Get Produto",
      *     tags={"Produto"},
-     *      @OA\Parameter(
+     *     @OA\Parameter(
      *         name="id",
-     *         in="query",
+     *         in="path",
      *         required=true,
-     *      ),
+     *         @OA\Schema(type="integer")
+     *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="OK"
+     *         description="Successful response",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer")
+     *         )
      *     )
      * ),
      */
@@ -299,19 +303,14 @@ class ProdutoController extends Controller
     /**
      * Produtos Controller
      * @OA\Get(
-     *     path="/api/produto/delete",
+     *     path="/api/produto/delete/{id}",
      *     summary="Delete Produto",
      *     tags={"Produto"},
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="id",
-     *                     type="int"
-     *                 ),
-     *              )
-     *          )
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="id",
+     *         required=true,
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -344,19 +343,14 @@ class ProdutoController extends Controller
     /**
      * Produtos Controller
      * @OA\Post(
-     *     path="/api/produto/pagination",
+     *     path="/api/produto/pagination/{page}",
      *     summary="Pagination Produto",
      *     tags={"Produto"},
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="page",
-     *                     type="int"
-     *                 ),
-     *              )
-     *          )
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,

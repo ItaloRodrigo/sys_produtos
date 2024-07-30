@@ -66,19 +66,14 @@ class LoginController extends Controller
     /**
      * Auth Controller
      * @OA\Get(
-     *     path="/api/auth/isloged",
+     *     path="/api/auth/isloged/{id}",
      *     summary="Auth loged",
      *     tags={"Auth"},
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="id",
-     *                     type="int"
-     *                 ),
-     *              )
-     *          )
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,

@@ -268,24 +268,39 @@
                 }
             }
         },
-        "/api/produto/get": {
+        "/api/produto/get/{id}": {
             "get": {
                 "tags": [
                     "Produto"
                 ],
                 "summary": "Get Produto",
                 "description": "Produtos Controller",
-                "operationId": "9009ec9b77eb423617ffe0931a61edcb",
+                "operationId": "1219e6c9ca2b743fecafbed1a55ba866",
                 "parameters": [
                     {
                         "name": "id",
-                        "in": "query",
-                        "required": true
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }

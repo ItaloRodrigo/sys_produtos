@@ -20,16 +20,11 @@ class CategoriaController extends Controller
      *     path="/api/categoria/get/{id}",
      *     summary="Get Categoria",
      *     tags={"Categoria"},
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="id",
-     *                     type="int"
-     *                 ),
-     *              )
-     *          )
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -169,19 +164,14 @@ class CategoriaController extends Controller
     /**
      * Categorias Controller
      * @OA\Post(
-     *     path="/api/categoria/delete",
+     *     path="/api/categoria/delete/{id}",
      *     summary="Delete Categoria",
      *     tags={"Categoria"},
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="id",
-     *                     type="int"
-     *                 ),
-     *              )
-     *          )
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -213,19 +203,14 @@ class CategoriaController extends Controller
     /**
      * Categorias Controller
      * @OA\Post(
-     *     path="/api/categoria/pagination",
+     *     path="/api/categoria/pagination/{page}",
      *     summary="Pagination Categoria",
      *     tags={"Categoria"},
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="page",
-     *                     type="int"
-     *                 ),
-     *              )
-     *          )
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
