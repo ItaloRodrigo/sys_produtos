@@ -276,6 +276,13 @@
                 "summary": "Get Produto",
                 "description": "Produtos Controller",
                 "operationId": "9009ec9b77eb423617ffe0931a61edcb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"

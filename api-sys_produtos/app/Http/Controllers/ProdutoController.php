@@ -25,6 +25,11 @@ class ProdutoController extends Controller
      *     path="/api/produto/get",
      *     summary="Get Produto",
      *     tags={"Produto"},
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         required=true,
+     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="OK"
