@@ -92,8 +92,9 @@ export default {
             }
           }
         })
-        .catch((error) => {
-          console.log(error.message);
+        .catch((erro) => {
+          except(this, erro);
+          console.log(erro);
         });
       //---
 

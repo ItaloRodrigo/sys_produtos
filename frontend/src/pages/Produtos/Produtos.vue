@@ -78,7 +78,7 @@ import ItemProduto from '@/components/Produtos/ItemProduto.vue';
 import ModalCriarProduto from '@/components/Produtos/ModalCriarProduto.vue';
 import ModalEditarProduto from '@/components/Produtos/ModalEditarProduto.vue';
 import Pagination from '@/components/Pagination.vue'; // Importação do componente de paginação
-import { api } from '@/plugins/api';
+import { api, except } from '@/plugins/api';
 
 export default {
   components: { BaseLayout, NotificationDefault, ItemProduto, ModalCriarProduto, ModalEditarProduto, Pagination },
@@ -111,7 +111,10 @@ export default {
           this.produtos = res.data.data.produtos;
           this.totalProducts = res.data.data.count; // Total de produtos obtido da API
         })
-        .catch((e) => console.log(e))
+        .catch((erro) => {
+          except(this, erro);
+          console.log(erro);
+        })
         .finally(() => {
           this.loading = false;
         });

@@ -37,6 +37,10 @@ export const auth_store = defineStore('auth',{
         .post("auth/login", user)
         .then((res) => {
           this.user = res.data.data;
+        })
+        .catch((erro) => {
+          expect(this, erro);
+          console.log(erro);
         });
       localStorage.setItem('user', JSON.stringify(this.user));
       return this.user;
@@ -48,7 +52,10 @@ export const auth_store = defineStore('auth',{
         .then((res) => {
           data = res.data;
         })
-        .catch((e) => console.log(ctx, e));
+        .catch((erro) => {
+          expect(this, erro);
+          console.log(erro);
+        });
       this.user = null;
       localStorage.removeItem('user');
       return data;
@@ -61,7 +68,10 @@ export const auth_store = defineStore('auth',{
             this.user = res.data;
             return true;
           })
-          .catch((e) => console.log(this, e));
+          .catch((erro) => {
+            expect(this, erro);
+            console.log(erro);
+          });
       }
       return false;
     },

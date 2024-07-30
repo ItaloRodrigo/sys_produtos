@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { api } from '@/plugins/api';
+import { api, except } from '@/plugins/api';
 import { useNotificationsStore } from '@/stores/notifications';
 
 export default {
@@ -155,7 +155,11 @@ export default {
     async loadCategoria() {
       this.isLoading = true;
       try {
-        const response = await api(this).get("categoria/all");
+        const response = await api(this).get("categoria/all")
+        .catch((erro) => {
+          except(this, erro);
+          console.log(erro);
+        });
         if (response.data.status === 200) {
           const data = response.data.data.categorias;
           const itemsArray = Object.keys(data)

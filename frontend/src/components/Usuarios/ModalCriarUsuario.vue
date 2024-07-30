@@ -55,7 +55,7 @@
 <script>
 
 // import axios from 'axios';
-import { api } from '@/plugins/api'
+import { api, except } from '@/plugins/api'
 import { useNotificationsStore } from '@/stores/notifications';
 
 export default {
@@ -154,8 +154,9 @@ export default {
             }
           }
         })
-        .catch((error) => {
-          console.log(error.message);
+        .catch((erro) => {
+          except(this, erro);
+          console.log(erro);
         });
       //---
 

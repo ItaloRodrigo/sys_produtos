@@ -28,41 +28,43 @@ function api(ctx = null, download = false, isFileUpload = false) {
 }
 function except(ctx, erro, erroIgnore = null) {
   if ("response" in erro && "$router" in ctx) {
-    if (erro.response.status == 401 && erro.config.url != "login") {
-      ctx.$router.push("/logout");
-    } else if (erro.response.status == erroIgnore) {
-      if ("form_errors" in ctx && erro.response.status == 400) {
+    const { status, data } = erro.response;
+    const { url } = erro.config;
+
+    if (status === 401) {
+      // Redireciona para a página de login ou realiza logout
+      if (url !== "/login") {
+        ctx.$router.push("/logout");
+      }
+    } else if (status === erroIgnore) {
+      if ("form_errors" in ctx && status === 400) {
         for (let key in ctx.form_errors) ctx.form_errors[key].length = 0;
-        ctx.form_errors = Object.assign(
-          ctx.form_errors,
-          erro.response.data.fields
-        );
+        ctx.form_errors = Object.assign(ctx.form_errors, data.fields);
       }
     } else {
       let params = {
         pathMatch: ctx.$route.path.substring(1).split("/"),
-        code: erro.response.status,
+        code: status,
         code_name: erro.code,
         api: erro.request.responseURL || "",
+        message: data.detail || erro.response.statusText,
+        class_api: data.class || "",
+        error: data.error || "",
+        fields: JSON.stringify(data.fields || {})
       };
-      if (erro.response.data != undefined) {
-        params["message"] =
-          erro.response.data.detail || erro.response.statusText;
-        params["class_api"] = erro.response.data.class || "";
-        params["error"] = erro.response.data.error || "";
-        params["fields"] = JSON.stringify(erro.response.data.fields || {});
-      } else {
-        params["message"] = erro.response.statusText;
-      }
+
       ctx.$router.push({
         name: "error",
         params: params,
       });
       return true;
     }
-  } else console.warn(erro);
+  } else {
+    console.warn(erro);
+  }
   return false;
 }
+
 function saveFile(response, title) {
   const url = window.URL.createObjectURL(new Blob([response.data]))
   const link = document.createElement('a')

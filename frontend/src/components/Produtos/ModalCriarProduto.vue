@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { api } from '@/plugins/api';
+import { api, except } from '@/plugins/api';
 import { useNotificationsStore } from '@/stores/notifications';
 
 export default {
@@ -169,7 +169,11 @@ export default {
 
           this.isLoading = true; // Define isLoading como true
           try {
-            const response = await api(this).post("produto/create", formData);
+            const response = await api(this).post("produto/create", formData)
+            .catch((erro) => {
+              except(this, erro);
+              console.log(erro);
+            });
             if (response.data.status === 200) {
               mensagem.push({
                 type: 'success',

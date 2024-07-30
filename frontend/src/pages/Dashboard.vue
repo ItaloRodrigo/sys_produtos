@@ -65,7 +65,7 @@
 <script>
 import { Bar, Pie, Doughnut } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement } from 'chart.js';
-import { api } from '@/plugins/api';
+import { api, except } from '@/plugins/api';
 
 // Registra os componentes do Chart.js
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement);
@@ -167,7 +167,8 @@ export default {
       this.userData = data.userData;
       this.productData = data.productData;
       this.categoryData = data.categoryData;
-    } catch (error) {
+    } catch (erro) {
+      except(this,erro)
       console.error('Erro ao buscar dados do dashboard:', error);
     } finally {
       this.loading = false;

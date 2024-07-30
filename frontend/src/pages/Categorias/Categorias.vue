@@ -72,7 +72,7 @@ import ItemCategoria from '@/components/Categorias/ItemCategoria.vue';
 import ModalCriarCategoria from '@/components/Categorias/ModalCriarCategoria.vue';
 import ModalEditarCategoria from '@/components/Categorias/ModalEditarCategoria.vue';
 import Pagination from '@/components/Pagination.vue'; // Importação do componente de paginação
-import { api } from '@/plugins/api';
+import { api, except } from '@/plugins/api';
 
 export default {
   components: { BaseLayout, NotificationDefault, ItemCategoria, ModalCriarCategoria, ModalEditarCategoria, Pagination },
@@ -105,7 +105,10 @@ export default {
           this.categorias = res.data.data.categorias;
           this.totalCategories = res.data.data.count; // Total de categorias obtido da API
         })
-        .catch((e) => console.log(e))
+        .catch((erro) => {
+          except(this, erro);
+          console.log(erro);
+        })
         .finally(() => {
           this.loading = false;
         });

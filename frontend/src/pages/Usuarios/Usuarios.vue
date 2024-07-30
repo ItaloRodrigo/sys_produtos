@@ -72,7 +72,7 @@ import ItemUsuario from '@/components/Usuarios/ItemUsuario.vue';
 import ModalCriarUsuario from '@/components/Usuarios/ModalCriarUsuario.vue';
 import ModalEditarUsuario from '@/components/Usuarios/ModalEditarUsuario.vue';
 import Pagination from '@/components/Pagination.vue'; // Importação do componente de paginação
-import { api } from '@/plugins/api';
+import { api, except } from '@/plugins/api';
 
 export default {
   components: { BaseLayout, NotificationDefault, ItemUsuario, ModalCriarUsuario, ModalEditarUsuario, Pagination },
@@ -105,7 +105,10 @@ export default {
           this.usuarios = res.data.data.users;
           this.totalUsers = res.data.data.count; // Total de usuários obtido da API
         })
-        .catch((e) => console.log(e))
+        .catch((erro) => {
+          except(this, erro);
+          console.log(erro);
+        })
         .finally(() => {
           this.loading = false;
         });

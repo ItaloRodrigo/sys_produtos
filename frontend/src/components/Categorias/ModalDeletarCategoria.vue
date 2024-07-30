@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { api } from '@/plugins/api';
+import { api, except } from '@/plugins/api';
 import { useNotificationsStore } from '@/stores/notifications';
 
 export default {
@@ -46,8 +46,11 @@ export default {
       const messages = [];
 
       try {
-        const response = await api(this).get(`categoria/delete/${this.categoria.id}`);
-
+        const response = await api(this).get(`categoria/delete/${this.categoria.id}`)
+        .catch((erro) => {
+          except(this, erro);
+          console.log(erro);
+        });
         if (response.data.status === 200) {
           messages.push({
             type: 'success',
