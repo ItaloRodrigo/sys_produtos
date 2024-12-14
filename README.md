@@ -183,6 +183,7 @@ composer install
  
  ```env
 php artisan l5-swagger:generate
+```
 ---
 
 Com essas instruções, você deve ser capaz de configurar e executar o projeto em seu ambiente local usando Docker. Se você encontrar problemas ou tiver dúvidas, sinta-se à vontade para buscar ajuda ou revisar a documentação oficial do Docker e das ferramentas usadas.
