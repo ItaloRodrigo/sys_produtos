@@ -308,16 +308,18 @@ class ProdutoController extends Controller
      *     tags={"Produto"},
      *     @OA\Parameter(
      *         name="id",
-     *         in="id",
+     *         in="path",
      *         required=true,
+     *         description="ID do produto a ser deletado",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK"
      *     )
-     * ),
+     * )
      */
+
 
     public function delete($id){
         try {

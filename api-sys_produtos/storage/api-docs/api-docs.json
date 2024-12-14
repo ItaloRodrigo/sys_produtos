@@ -20,20 +20,16 @@
                 "summary": "Get Categoria",
                 "description": "Categorias Controller",
                 "operationId": "ba5e87a6c2c86963d243acf50a5f2414",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "id": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -120,28 +116,24 @@
                 }
             }
         },
-        "/api/categoria/delete": {
+        "/api/categoria/delete/{id}": {
             "post": {
                 "tags": [
                     "Categoria"
                 ],
                 "summary": "Delete Categoria",
                 "description": "Categorias Controller",
-                "operationId": "ad55593bb97548058f980e13e186d1be",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "id": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "operationId": "0625a79eb6ea3716b2d977fb074df7e0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -149,28 +141,24 @@
                 }
             }
         },
-        "/api/categoria/pagination": {
+        "/api/categoria/pagination/{page}": {
             "post": {
                 "tags": [
                     "Categoria"
                 ],
                 "summary": "Pagination Categoria",
                 "description": "Categorias Controller",
-                "operationId": "59c40337319aa7af26613ef36dfebd5f",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "page": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "operationId": "395be9a410d6ff6ab18ba9e05cb5bc49",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -210,28 +198,24 @@
                 }
             }
         },
-        "/api/auth/isloged": {
+        "/api/auth/isloged/{id}": {
             "get": {
                 "tags": [
                     "Auth"
                 ],
                 "summary": "Auth loged",
                 "description": "Auth Controller",
-                "operationId": "bca479aa0c11107b70ea26ed334a570a",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "id": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "operationId": "6cb85a2b6880721ce81455d4011cbe7b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -412,28 +396,25 @@
                 }
             }
         },
-        "/api/produto/delete": {
+        "/api/produto/delete/{id}": {
             "get": {
                 "tags": [
                     "Produto"
                 ],
                 "summary": "Delete Produto",
                 "description": "Produtos Controller",
-                "operationId": "93e8250182569c15ee1ea8ff0f0045fb",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "id": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "operationId": "3a48b112cb4b39e7d99c5abc564fa725",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do produto a ser deletado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -441,28 +422,24 @@
                 }
             }
         },
-        "/api/produto/pagination": {
+        "/api/produto/pagination/{page}": {
             "post": {
                 "tags": [
                     "Produto"
                 ],
                 "summary": "Pagination Produto",
                 "description": "Produtos Controller",
-                "operationId": "21e5ccdfdbc205babf04f6c99b7bf43c",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "page": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "operationId": "a0de3f745b7d86b36cfb264795cd0bf7",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -478,6 +455,16 @@
                 "summary": "Get Usuário",
                 "description": "Usuário Controller",
                 "operationId": "60121bcbd216533e5e8fcb7cc37d3871",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -570,28 +557,24 @@
                 }
             }
         },
-        "/api/user/delete": {
+        "/api/user/delete/{id}": {
             "get": {
                 "tags": [
                     "Usuário"
                 ],
                 "summary": "Delete Usuário",
                 "description": "Usuário Controller",
-                "operationId": "d18ffbdd4448b9d997a8cc7f66d3b0e3",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "id": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "operationId": "a044fadd48f553fd188d17579cb30ef6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -599,28 +582,24 @@
                 }
             }
         },
-        "/api/user/pagination": {
+        "/api/user/pagination/{page}": {
             "post": {
                 "tags": [
                     "Usuário"
                 ],
                 "summary": "Pagination Usuário",
                 "description": "Usuário Controller",
-                "operationId": "399cdf4c0a5dcc41e58f5781868e0b68",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "page": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "operationId": "e4aaee7fb41eecb98f70f248e9052338",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"

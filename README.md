@@ -169,8 +169,20 @@ L5_SWAGGER_CONST_HOST="${APP_URL}/api/v1"
 
 ## Notas Adicionais
 
+- O Dockerfile está configurado para instalar todas as dependências, contudo, em caso de realmente não iniciar a aplicação faça o seguinte: 
+-- entre no container da aplicação backend e rode o comando "composer install":
+
+```docker
+docker exec -it <nome-do-container> bash
+composer install
+```
+
 - **Swagger**: A documentação da API está disponível através do Swagger UI na URL `http://localhost:8989/api/documentation`. Certifique-se de que o serviço de backend está rodando para acessar a documentação.
 
+- Após rodar o comando para instanciar os containers, e obter o vendor, é necessário aguardar alguns minutos enquanto o swagger carrega a documentação, em caso de falha, execute:
+ 
+ ```env
+php artisan l5-swagger:generate
 ---
 
 Com essas instruções, você deve ser capaz de configurar e executar o projeto em seu ambiente local usando Docker. Se você encontrar problemas ou tiver dúvidas, sinta-se à vontade para buscar ajuda ou revisar a documentação oficial do Docker e das ferramentas usadas.
