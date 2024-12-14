@@ -169,6 +169,12 @@ L5_SWAGGER_CONST_HOST="${APP_URL}/api/v1"
 
 ## Notas Adicionais
 
+Ordem de execução dos comandos após container ser criado:
+
+```dockerfile
+CMD ["sh", "-c", "composer install --no-dev --optimize-autoloader && php artisan key:generate && php artisan l5-swagger:generate && php-fpm"]
+```
+
 - O Dockerfile está configurado para instalar todas as dependências, contudo, em caso de realmente não iniciar a aplicação faça o seguinte: 
 -- entre no container da aplicação backend e rode o comando "composer install":
 
