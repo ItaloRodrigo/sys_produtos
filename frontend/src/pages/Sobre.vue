@@ -1,7 +1,7 @@
 <template>
   <base-layout titlecard="Sobre Mim">
     <v-container>
-      <v-card class="mx-auto my-5" max-width="800" outlined>
+      <v-card class="mx-auto my-5" max-width="900" outlined>
         <!-- Título do Card -->
         <v-card-title>
           <v-icon class="mr-2" size="x-large">mdi-account</v-icon>
@@ -15,14 +15,13 @@
 
           <p class="text-h6 text-justify">
             <strong>Resumo Profissional:</strong><br>
-            Atuo há mais de 5 anos como desenvolvedor fullstack, adquirindo experiência em back-end e front-end.
-            Desenvolvi habilidades em Segurança da Informação, Ciência de Dados e Otimização de Processos.
-            Trabalhei com HTML, CSS, Bootstrap 5, Vue.js, Vuetify, JavaScript, Laravel, PHP, Git, Github, Figma, e SCRUM.
-          </p>
-
-          <p class="text-h6 text-justify">
-            Trabalhei em desenvolvimento de web sites e sistemas, otimização de processos e segurança da informação.
-            Sou também pesquisador e professor na área de otimização de processos e computação aplicada, com artigos e livros publicados.
+            Atua há mais de 7 anos no ramo de tecnologia da informação, adquiriu experiência ao trabalhar com
+            ferramentas das stacks de programação back-end e front-end, ao longo dos anos conquistou maturidade em
+            análises de processos para abstração de regras de negócios aplicadas à sistemas de eficiência energética,
+            sistemas financeiros, sistemas acadêmicos e sistemas de rastreabilidade para movimentação de materiais.
+            Desenvolveu habilidades no âmbito da Segurança da Informação aplicado à penetração de dados, segurança de
+            redes e planos de segurança da informação, no âmbito da Ciência de Dados aplicado à sistemas de predição com
+            DNN, RNA, e Algoritmos de Otimização.
           </p>
         </v-card-text>
 
@@ -30,14 +29,16 @@
         <v-card-subtitle class="mt-4">
           <h3 class="font-weight-bold">Formação Acadêmica</h3>
         </v-card-subtitle>
-        <v-list class="pa-4">
-          <v-list-item>
+        <v-list class="p-0 m-0">
+          <v-list-item class="p-0">
             <v-list-item-icon>
-              <v-icon>mdi-school</v-icon>
+              <v-icon>mdi-school</v-icon> Mestre em Engenharia
             </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>Bacharel em Ciência da Computação</v-list-item-title>
-            </v-list-item-content>
+          </v-list-item>
+          <v-list-item class="p-0">
+            <v-list-item-icon>
+              <v-icon>mdi-school</v-icon> Bacharel em Ciência da Computação
+            </v-list-item-icon>
           </v-list-item>
         </v-list>
 
@@ -45,10 +46,8 @@
         <v-card-actions>
           <v-list-item class="w-100 align-center">
             <v-avatar color="grey darken-3" class="mr-3">
-              <v-img
-                alt="John"
-                src="https://media.licdn.com/dms/image/D4D03AQFfB0rlWjaXiw/profile-displayphoto-shrink_200_200/0/1710195953181?e=1727913600&v=beta&t=TYiDrIPLs2cXRK0Xj6HtLA59GWohO2GMBvwlme31gTo"
-              ></v-img>
+              <v-img alt="Italo"
+                src="https://media.licdn.com/dms/image/v2/D4D03AQHz6ZyVEznI-A/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1731369101461?e=1739404800&v=beta&t=6dc9IFiBVSKN1IY3TZqvW3IL9OtWdcvOBCRJAWENprg"></v-img>
               <!-- <img src="https://media.licdn.com/dms/image/D4D03AQFfB0rlWjaXiw/profile-displayphoto-shrink_200_200/0/1710195953181?e=1727913600&v=beta&t=TYiDrIPLs2cXRK0Xj6HtLA59GWohO2GMBvwlme31gTo" alt="Ítalo Rodrigo"> -->
             </v-avatar>
             <v-list-item-content>
@@ -56,7 +55,8 @@
               <v-list-item-subtitle class="text-body-2">Dev Fullstack</v-list-item-subtitle>
             </v-list-item-content>
             <v-spacer></v-spacer>
-            <v-btn class="me-2" color="primary" href="https://www.linkedin.com/in/italo-computation/" target="_blank" variant="flat">
+            <v-btn class="me-2" color="primary" href="https://www.linkedin.com/in/italo-computation/" target="_blank"
+              variant="flat">
               <v-icon left>mdi-linkedin</v-icon> @italo-computation
             </v-btn>
             <v-btn icon>
@@ -80,7 +80,7 @@ export default {
       // counter: this.$auth.getCounter
     };
   },
-  mounted(){
+  mounted() {
     console.log(this.$auth.isAuth);
   }
 }
